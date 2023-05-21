@@ -2,9 +2,11 @@ package hu.ulyssys.javaee.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 @Entity
+@Table(name = "courier")
 public class Courier extends AbstractEntity {
 
     @Column(name = "first_name", nullable = false, length = 500)

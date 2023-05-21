@@ -2,8 +2,10 @@ package hu.ulyssys.javaee.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "food")
 public class Food extends AbstractEntity {
     @Column(name = "name", nullable = false, length = 200)
     private String name;
