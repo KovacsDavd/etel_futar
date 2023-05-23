@@ -8,14 +8,14 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "courier")
 public class Courier extends AbstractEntity {
-
+ //TODO: nem lehet azonos a név
     @Column(name = "first_name", nullable = false, length = 500)
     private String firstName;
 
     @Column(name = "last_name", nullable = false, length = 500)
     private String lastName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     @Pattern(regexp = "\\+36\\d{9}", message = "Invalid phone number format")
     private String phoneNumber;
 

@@ -10,7 +10,7 @@ public abstract class CoreEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
     public LocalDateTime getCreatedDate() {

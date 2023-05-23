@@ -13,7 +13,7 @@ public class Food extends AbstractEntity {
     private String description;
 
     @Column(name = "price", nullable = false)
-    private int price;
+    private Integer price;
 
     public String getName() {
         return name;

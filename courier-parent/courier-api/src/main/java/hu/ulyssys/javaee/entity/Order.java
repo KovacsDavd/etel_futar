@@ -7,7 +7,8 @@ import java.util.List;
 @Entity
 @Table(name = "app_order")
 public class Order extends AbstractEntity {
-    @Column(name = "delivery_date")
+    //TODO: Idő több mint a mostani
+    @Column(name = "delivery_date", nullable = false)
     private LocalDateTime deliveryDate;
 
     @ManyToOne
@@ -19,16 +20,16 @@ public class Order extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "food_id"))
     private List<Food> foods;
 
-    @Column(name = "settlement")
+    @Column(name = "settlement", nullable = false, length = 200)
     private String settlement;
 
-    @Column(name = "public_space")
+    @Column(name = "public_space", nullable = false, length = 200)
     private String publicSpace;
 
-    @Column(name = "public_space_nature")
+    @Column(name = "public_space_nature", nullable = false, length = 200)
     private String publicSpaceNature;
 
-    @Column(name = "house_number")
+    @Column(name = "house_number", nullable = false, length = 200)
     private String houseNumber;
 
     public LocalDateTime getDeliveryDate() {
