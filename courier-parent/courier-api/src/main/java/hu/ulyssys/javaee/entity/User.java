@@ -30,4 +30,5 @@ public class User extends CoreEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
