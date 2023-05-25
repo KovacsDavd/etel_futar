@@ -1,5 +1,5 @@
 ###
-GET http://localhost:8080/api/order/1
+GET http://localhost:8080/api/order/10
 
 ###
 
@@ -15,18 +15,27 @@ Content-Type: application/json
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
     "creatorID": 1,
-    "deliveryDate": "2023-05-24T14:45:50.371043",
-    "houseNumber": "2",
     "modifiedDate": "2023-05-24T14:45:50.371043",
     "modifiedID": 1,
+    "deliveryDate": "2023-05-24T14:45:50.371043",
+    "courierID": 1,
+    "settlement": "asd",
     "publicSpace": "asd",
-    "publicSpaceNature": "ds",
-    "settlement": "d"
+    "publicSpaceNature": "asd",
+    "houseNumber": 11,
+    "foodList": [
+      {
+        "foodId": 5
+      },
+      {
+        "foodId": 3
+      }
+    ]
   }
 }
 ###
 
-DELETE http://localhost:8080/api/order/2
+DELETE http://localhost:8080/api/order/8
 ###
 PUT http://localhost:8080/api/order/
 Content-Type: application/json
@@ -35,14 +44,15 @@ Content-Type: application/json
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
     "creatorID": 1,
-    "deliveryDate": "2023-05-24T14:45:50.371043",
-    "houseNumber": "22",
-    "id": 1,
-    "modifiedDate": "2023-05-24T14:45:50.371043",
+    "id": 13,
+    "modifiedDate": "2024-05-24T14:45:50.371043",
     "modifiedID": 1,
+    "deliveryDate": "2023-05-24T14:45:50.371043",
+    "courierID": 1,
+    "settlement": "asd",
     "publicSpace": "asd",
-    "publicSpaceNature": "ds",
-    "settlement": "d"
+    "publicSpaceNature": "asd",
+    "houseNumber": 11
   }
 }
 

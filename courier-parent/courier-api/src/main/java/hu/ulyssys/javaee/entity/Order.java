@@ -14,8 +14,8 @@ public class Order extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "courier_id")
     private Courier courier;
-    @OneToMany
-    private List<Food> foods;
+    @OneToMany(mappedBy = "order",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<OrderFood> foods;
 
     @Column(name = "settlement", nullable = false, length = 200)
     private String settlement;
@@ -45,11 +45,11 @@ public class Order extends AbstractEntity {
         this.courier = courier;
     }
 
-    public List<Food> getFoods() {
+    public List<OrderFood> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Food> foods) {
+    public void setFoods(List<OrderFood> foods) {
         this.foods = foods;
     }
 

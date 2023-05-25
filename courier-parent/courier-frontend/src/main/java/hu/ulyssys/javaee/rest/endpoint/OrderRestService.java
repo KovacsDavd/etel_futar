@@ -2,14 +2,13 @@ package hu.ulyssys.javaee.rest.endpoint;
 
 import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.entity.Order;
+import hu.ulyssys.javaee.entity.OrderFood;
+import hu.ulyssys.javaee.rest.model.OrderFoodModel;
 import hu.ulyssys.javaee.rest.model.OrderModel;
 import hu.ulyssys.javaee.rest.request.RestFunctionRequest;
 import hu.ulyssys.javaee.rest.response.RestFindAllResponse;
 import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
-import hu.ulyssys.javaee.service.CourierService;
-import hu.ulyssys.javaee.service.FoodService;
-import hu.ulyssys.javaee.service.OrderService;
-import hu.ulyssys.javaee.service.UserService;
+import hu.ulyssys.javaee.service.*;
 import org.apache.xpath.operations.Or;
 
 import javax.inject.Inject;
@@ -21,12 +20,15 @@ import java.util.List;
 
 @Path("/order")
 public class OrderRestService {
+    //TODO: put modósítása
     @Inject
     private OrderService orderService;
     @Inject
     private UserService userService;
     @Inject
     private CourierService courierService;
+    @Inject
+    private OrderFoodService orderFoodService;
 
     @Inject
     private FoodService foodService;
@@ -65,7 +67,7 @@ public class OrderRestService {
         if (request.getModel() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        Order order = dtoToEntity(new Order(), request.getModel());
+        Order order = dtoToEntity(new Order(), request.getModel(), true);
         orderService.add(order);
 
         return Response.ok(new RestFindByIdResponse<>(entityToDTO(order))).build();
@@ -85,7 +87,7 @@ public class OrderRestService {
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        dtoToEntity(order, request.getModel());
+        dtoToEntity(order, request.getModel(), false);
         orderService.update(order);
 
         return Response.ok(new RestFindByIdResponse<>(entityToDTO(order))).build();
@@ -103,7 +105,7 @@ public class OrderRestService {
         return Response.ok().build();
     }
 
-    private Order dtoToEntity(Order order, OrderModel orderModel) {
+    private Order dtoToEntity(Order order, OrderModel orderModel, boolean createOrderFoods) {
         order.setCreatorUser(userService.findById(orderModel.getCreatorID()));
         if (orderModel.getModifiedDate() != null) {
             order.setModifiedDate(orderModel.getModifiedDate());
@@ -120,20 +122,22 @@ public class OrderRestService {
         order.setHouseNumber(orderModel.getHouseNumber());
         order.setPublicSpace(orderModel.getPublicSpace());
         order.setPublicSpaceNature(orderModel.getPublicSpaceNature());
-        /*if (orderModel.getFoodListID() != null) {
-            if (orderModel.getFoodListID() != null) {
-                List<Food> foods = new ArrayList<>();
-                for (Long foodId : orderModel.getFoodListID()) {
-                    Food food = foodService.findById(foodId);
-                    if (food != null) {
-                        foods.add(food);
-                    }
+        if (orderModel.getFoodList() != null) {
+            if (createOrderFoods){ //POST
+                List<OrderFood> orderFoods = new ArrayList<>();
+                for (OrderFoodModel orderFoodModel : orderModel.getFoodList()) {
+                    OrderFood orderFood = new OrderFood();
+                    orderFood.setFood(foodService.findById(orderFoodModel.getFoodId()));
+                    orderFood.setOrder(order);
+                    orderFoods.add(orderFood);
                 }
-                order.setFoods(foods);
-            } else {
-                order.setFoods(null);
+                order.setFoods(orderFoods);
+            } else { //PUT
+                // NEM FRISSÍTJÜK AZ ORDERFOOD LISTÁT
             }
-        }*/
+        } else {
+            order.setFoods(null);
+        }
         return order;
     }
 
@@ -156,13 +160,16 @@ public class OrderRestService {
         model.setPublicSpace(order.getPublicSpace());
         model.setPublicSpaceNature(order.getPublicSpaceNature());
         model.setSettlement(order.getSettlement());
-        /*if (order.getFoods() != null) {
-            List<Long> foodsID = new ArrayList<>();
-            for (Food food : order.getFoods()) {
-                foodsID.add(food.getId());
+        if (order.getFoods() != null) {
+            List<OrderFoodModel> foodList = new ArrayList<>();
+            for (OrderFood orderFood : order.getFoods()) {
+                OrderFoodModel orderFoodModel = new OrderFoodModel();
+                orderFoodModel.setOrderId(orderFood.getOrder().getId());
+                orderFoodModel.setFoodId(orderFood.getFood().getId());
+                foodList.add(orderFoodModel);
             }
-            model.setFoodListID(foodsID);
-        }*/
+            model.setFoodList(foodList);
+        }
         return model;
     }
 }

@@ -1,5 +1,5 @@
 ###
-GET http://localhost:8080/api/food/15
+GET http://localhost:8080/api/food/4
 
 ###
 
@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:8080/api/food/9
+DELETE http://localhost:8080/api/food/2
 ###
 PUT http://localhost:8080/api/food
 Content-Type: application/json

@@ -14,7 +14,7 @@ public class OrderModel {
     private Long modifiedID;
     private LocalDateTime deliveryDate;
     private Long courierID;
-    private List<Long> foodListID;
+    private List<OrderFoodModel> foodList;
     private String settlement;
     private String publicSpace;
     private String publicSpaceNature;
@@ -76,12 +76,12 @@ public class OrderModel {
         this.courierID = courierID;
     }
 
-    public List<Long> getFoodListID() {
-        return foodListID;
+    public List<OrderFoodModel> getFoodList() {
+        return foodList;
     }
 
-    public void setFoodListID(List<Long> foodListID) {
-        this.foodListID = foodListID;
+    public void setFoodList(List<OrderFoodModel> foodList) {
+        this.foodList = foodList;
     }
 
     public String getSettlement() {

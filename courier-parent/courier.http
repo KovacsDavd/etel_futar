@@ -1,5 +1,5 @@
 ###
-GET http://localhost:8080/api/courier/3
+GET http://localhost:8080/api/courier/0
 
 ###
 
@@ -38,7 +38,7 @@ Content-Type: application/json
     "lastName": "last_name",
     "modifiedDate": "2023-05-24T14:45:50.371043",
     "modifiedID": 1,
-    "phoneNumber": "+367066406722"
+    "phoneNumber": "+36706640672"
   }
 }
 
