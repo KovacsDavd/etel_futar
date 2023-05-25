@@ -14,10 +14,7 @@ public class Order extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "courier_id")
     private Courier courier;
-    @ManyToMany
-    @JoinTable(name = "order_foods",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "food_id"))
+    @OneToMany
     private List<Food> foods;
 
     @Column(name = "settlement", nullable = false, length = 200)

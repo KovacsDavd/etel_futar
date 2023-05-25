@@ -12,11 +12,12 @@
     <p:growl id="growl" showDetail="true" globalOnly="true"/>
     <p:toolbar>
         <p:toolbarGroup>
-            <p:commandButton value="New" icon="pi pi-plus" actionListener="#{foodMBean.initNewFood()}"
-                             update="@form :foodDialog" oncomplete="PF('foodDialog').show()"
+            <p:commandButton value="New" actionListener="#{foodMBean.initNewFood()}"
+                             update="@form :foodDialog"
+                             oncomplete="PF('foodDialog').show()"
                              style="margin-right: 10px"/>
             <p:commandButton rendered="#{foodMBean.selectedFood.id!=null}" value="Remove"
-                             actionListener="#{foodMBean.remove()}" update="@form">
+                             actionListener="#{foodMBean.remove()}" update="@form" style="margin-right: 10px">
                 <p:confirm header="Remove" message="Are you sure?"/>
             </p:commandButton>
             <p:commandButton rendered="#{foodMBean.selectedFood.id!=null}" value="Edit" update="@form :foodDialog"
@@ -35,7 +36,7 @@
                  rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
         <p:ajax event="rowSelect" update="@form"/>
-        <p:ajax event="rowUnselect" listener="#{foodMBean.initNewFood()}" update="@form"/>
+        <p:ajax event="rowUnselect" listener="#{foodMBean.initNewFood}" update="@form"/>
 
         <p:column toggleable="false" filterBy="#{food.id}" filterMatchMode="contains" sortBy="#{food.id}">
             <f:facet name="header">ID</f:facet>
@@ -64,7 +65,9 @@
 
         <p:column filterBy="#{food.price}" filterMatchMode="contains" sortBy="#{food.price}">
             <f:facet name="header">Price</f:facet>
-            <h:outputText value="#{food.price}"/>
+            <h:outputText value="#{food.price}">
+                <f:convertNumber type="currency" currencySymbol=" Ft" maxFractionDigits="0"/>
+            </h:outputText>
         </p:column>
 
         <p:column>
@@ -90,7 +93,7 @@
             <p:inputText id="description" value="#{foodMBean.selectedFood.description}" required="true"/>
 
             <p:outputLabel for="price" value="Price"/>
-            <p:inputNumber id="price" value="#{foodMBean.selectedFood.price}" symbol=" Ft" symbolPosition="s" required="true"/>
+            <p:inputText id="price" value="#{foodMBean.selectedFood.price}" required="true"/>
 
             <p:outputLabel for="creatorUser" value="Creator User"/>
             <p:selectOneMenu id="creatorUser" value="#{foodMBean.creatorUserID}" required="true">
@@ -100,7 +103,7 @@
             </p:selectOneMenu>
 
             <p:outputLabel for="modifierUser" value="Modifier User"/>
-            <p:selectOneMenu id="modifierUser" value="#{foodMBean.modifierUserID}" required="true">
+            <p:selectOneMenu id="modifierUser" value="#{foodMBean.modifierUserID}" >
                 <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
                 <f:selectItems value="#{foodMBean.userList}" var="modifier" itemLabel="#{modifier.userName}"
                                itemValue="#{modifier.id}"/>

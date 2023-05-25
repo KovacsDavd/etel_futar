@@ -1,0 +1,48 @@
+###
+GET http://localhost:8080/api/order/1
+
+###
+
+
+GET http://localhost:8080/api/order/
+
+###
+
+POST http://localhost:8080/api/order/
+Content-Type: application/json
+
+{
+  "model": {
+    "createdDate": "2023-05-24T14:45:50.371043",
+    "creatorID": 1,
+    "deliveryDate": "2023-05-24T14:45:50.371043",
+    "houseNumber": "2",
+    "modifiedDate": "2023-05-24T14:45:50.371043",
+    "modifiedID": 1,
+    "publicSpace": "asd",
+    "publicSpaceNature": "ds",
+    "settlement": "d"
+  }
+}
+###
+
+DELETE http://localhost:8080/api/order/2
+###
+PUT http://localhost:8080/api/order/
+Content-Type: application/json
+
+{
+  "model": {
+    "createdDate": "2023-05-24T14:45:50.371043",
+    "creatorID": 1,
+    "deliveryDate": "2023-05-24T14:45:50.371043",
+    "houseNumber": "22",
+    "id": 1,
+    "modifiedDate": "2023-05-24T14:45:50.371043",
+    "modifiedID": 1,
+    "publicSpace": "asd",
+    "publicSpaceNature": "ds",
+    "settlement": "d"
+  }
+}
+

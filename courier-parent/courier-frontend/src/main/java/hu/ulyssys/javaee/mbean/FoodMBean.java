@@ -5,10 +5,12 @@ import hu.ulyssys.javaee.entity.User;
 import hu.ulyssys.javaee.service.FoodService;
 import hu.ulyssys.javaee.service.UserService;
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,12 +37,12 @@ public class FoodMBean implements Serializable {
 
     private void load() {
         list = service.getAll();
+        userList = userService.getAll();
     }
 
     @PostConstruct
     private void init() {
         load();
-        userList = userService.getAll();
     }
 
     public void remove() {
@@ -51,11 +53,11 @@ public class FoodMBean implements Serializable {
     }
 
     public void initNewFood() {
-        selectedFood = new Food();
+        this.selectedFood = new Food();
     }
 
     public void save() {
-        if (modifierUserID != null) {
+         if (modifierUserID != null) {
             selectedFood.setModifiedUser(userService.findById(modifierUserID));
         } else {
             selectedFood.setModifiedUser(null);
@@ -73,7 +75,6 @@ public class FoodMBean implements Serializable {
         load();
         PrimeFaces.current().executeScript("PF('foodDialog').hide()");
     }
-
 
     private LocalDateTime time() {
         LocalDateTime now = LocalDateTime.now();
