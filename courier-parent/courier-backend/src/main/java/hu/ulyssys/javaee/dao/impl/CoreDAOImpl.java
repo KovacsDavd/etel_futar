@@ -38,4 +38,8 @@ public abstract class CoreDAOImpl<T extends CoreEntity> implements CoreDAO<T> {
     }
 
     protected abstract Class<T> getManagedClass();
+
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 }

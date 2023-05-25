@@ -1,26 +1,37 @@
 package hu.ulyssys.javaee.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NamedQuery(name = User.FIND_BY_USERNAME, query = "select u from User u where u.username=:username")
 @Entity
 @Table(name = "app_user")
 public class User extends CoreEntity {
-    @Column(name = "user_name", nullable = false, length = 200)
-    private String userName;
+    public static final String FIND_BY_USERNAME = "User.findByUsername";
+    @Column(name = "username", nullable = false, length = 200, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
-    private String password; //TODO titkosítani
+    private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role;
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getPassword() {
@@ -28,7 +39,9 @@ public class User extends CoreEntity {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PasswordUtils.hashPassword(password);
     }
-
+    public boolean verifyPassword(String password) {
+        return PasswordUtils.verifyPassword(password, this.password);
+    }
 }

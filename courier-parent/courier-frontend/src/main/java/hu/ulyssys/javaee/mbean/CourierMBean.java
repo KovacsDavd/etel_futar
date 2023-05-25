@@ -1,17 +1,15 @@
 package hu.ulyssys.javaee.mbean;
 
-import hu.ulyssys.javaee.entity.Food;
+
+import hu.ulyssys.javaee.entity.Courier;
 import hu.ulyssys.javaee.entity.User;
-import hu.ulyssys.javaee.service.FoodService;
+import hu.ulyssys.javaee.service.CourierService;
 import hu.ulyssys.javaee.service.UserService;
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,24 +18,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalDateTime.*;
-
 @Named
 @ViewScoped
-public class FoodMBean implements Serializable {
+public class CourierMBean implements Serializable {
     @Inject
-    private FoodService service;
+    private CourierService courierService;
     @Inject
     private UserService userService;
 
-    List<Food> list = new ArrayList<>();
     List<User> userList;
-    private Food selectedFood = new Food();
+    List<Courier> list = new ArrayList<>();
+    private Courier selectedCourier = new Courier();
     private Long modifierUserID;
     private Long creatorUserID;
 
     private void load() {
-        list = service.getAll();
+        list = courierService.getAll();
         userList = userService.getAll();
     }
 
@@ -47,34 +43,34 @@ public class FoodMBean implements Serializable {
     }
 
     public void remove() {
-        service.remove(selectedFood);
-        initNewFood();
+        courierService.remove(selectedCourier);
+        initNewCourier();
         load();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successful remove"));
     }
 
-    public void initNewFood() {
-        this.selectedFood = new Food();
+    public void initNewCourier() {
+        this.selectedCourier = new Courier();
     }
 
     public void save() {
         if (modifierUserID != null) {
-            selectedFood.setModifiedUser(userService.findById(modifierUserID));
+            selectedCourier.setModifiedUser(userService.findById(modifierUserID));
         } else {
-            selectedFood.setModifiedUser(null);
+            selectedCourier.setModifiedUser(null);
         }
 
-        if (selectedFood.getId() == null) {
-            selectedFood.setCreatedDate(time());
-            selectedFood.setCreatorUser(userService.findById(creatorUserID));
-            service.add(selectedFood);
+        if (selectedCourier.getId() == null) {
+            selectedCourier.setCreatedDate(time());
+            selectedCourier.setCreatorUser(userService.findById(creatorUserID));
+            courierService.add(selectedCourier);
         } else {
-            selectedFood.setModifiedDate(time());
-            service.update(selectedFood);
+            selectedCourier.setModifiedDate(time());
+            courierService.update(selectedCourier);
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successful save"));
         load();
-        PrimeFaces.current().executeScript("PF('foodDialog').hide()");
+        PrimeFaces.current().executeScript("PF('courierDialog').hide()");
     }
 
     private LocalDateTime time() {
@@ -82,40 +78,29 @@ public class FoodMBean implements Serializable {
         return now;
     }
 
-    public List<Food> getList() {
+
+    public CourierService getCourierService() {
+        return courierService;
+    }
+
+    public void setCourierService(CourierService courierService) {
+        this.courierService = courierService;
+    }
+
+    public List<Courier> getList() {
         return list;
     }
 
-    public void setList(List<Food> list) {
+    public void setList(List<Courier> list) {
         this.list = list;
     }
 
-    public FoodService getService() {
-        return service;
+    public Courier getSelectedCourier() {
+        return selectedCourier;
     }
 
-    public void setService(FoodService service) {
-        this.service = service;
-    }
-
-    public Food getSelectedFood() {
-        return selectedFood;
-    }
-
-    public void setSelectedFood(Food selectedFood) {
-        this.selectedFood = selectedFood;
-
-        if (selectedFood != null && selectedFood.getModifiedUser() != null) {
-            creatorUserID = selectedFood.getCreatorUser().getId();
-        } else {
-            creatorUserID = null;
-        }
-
-        if (selectedFood != null && selectedFood.getModifiedUser() != null) {
-            modifierUserID = selectedFood.getModifiedUser().getId();
-        } else {
-            modifierUserID = null;
-        }
+    public void setSelectedCourier(Courier selectedCourier) {
+        this.selectedCourier = selectedCourier;
     }
 
     public UserService getUserService() {

@@ -2,6 +2,8 @@ package hu.ulyssys.javaee.service;
 
 import hu.ulyssys.javaee.entity.User;
 
+import javax.inject.Inject;
+
 public interface UserService extends CoreService<User> {
-    //TODO: User findByName(String name);
+    User findByUsername(String username);
 }
