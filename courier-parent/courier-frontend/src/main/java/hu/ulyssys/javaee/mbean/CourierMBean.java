@@ -65,14 +65,21 @@ public class CourierMBean implements Serializable {
         if (selectedCourier.getId() == null) {
             selectedCourier.setCreatedDate(time());
             selectedCourier.setCreatorUser(userService.findById(creatorUserID));
-            courierService.add(selectedCourier);
+            if (selectedCourier.isFirstNameSameLastName(selectedCourier.getLastName(), selectedCourier.getFirstName())) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Last illetve Firstname nem lehet azonos"));
+            } else {
+                courierService.add(selectedCourier);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successful save"));
+                load();
+                PrimeFaces.current().executeScript("PF('courierDialog').hide()");
+            }
         } else {
             selectedCourier.setModifiedDate(time());
             courierService.update(selectedCourier);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successful save"));
+            load();
+            PrimeFaces.current().executeScript("PF('courierDialog').hide()");
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successful save"));
-        load();
-        PrimeFaces.current().executeScript("PF('courierDialog').hide()");
     }
 
     private LocalDateTime time() {

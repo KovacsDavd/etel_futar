@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en">
+
+<h:panelGroup rendered="#{!loggedInUserMBean.loggedIn}">
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <h2 style="text-align: center;">Muszáj bejelentkezned!</h2>
+        <p:commandButton id="loginButton" oncomplete="PF('loginDialog').show()"
+                         value="Login" icon="pi pi-fw pi-sign-in"
+                         styleClass="ui-button-info" update="growl"/>
+    </div>
+</h:panelGroup>
+
+<h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <h2 style="text-align: center;">Nincs elég jogosultságod!</h2>
+        <p:commandButton id="loginButton2" oncomplete="PF('loginDialog').show()"
+                         value="Login" icon="pi pi-fw pi-sign-in"
+                         styleClass="ui-button-info" update="growl"/>
+    </div>
+</h:panelGroup>
+<h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">
+    <p:menubar>
+        <p:menuitem value="Users" outcome="/xhtml/user.xhtml"/>
+        <p:menuitem value="Couriers" outcome="/xhtml/courier.xhtml"/>
+        <p:menuitem value="Foods" outcome="/xhtml/food.xhtml"/>
+        <p:menuitem value="Orders" outcome="/xhtml/admin.xhtml"/>
+        <f:facet name="options">
+            <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
+                             rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
+                             styleClass="ui-button-info" update="@form"/>
+        </f:facet>
+    </p:menubar>
+</h:panelGroup>
+
+</html>

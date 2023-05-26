@@ -3,37 +3,18 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xml:lang="en" lang="en">
 <h:head>
     <title>Order</title>
 </h:head>
 <body>
 <h:form id="mainForm">
-    <p:growl id="growl" showDetail="true" globalOnly="true" />
-    <h:panelGroup rendered="#{!loggedInUserMBean.loggedIn}">
-        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <h2 style="text-align: center;">Muszáj bejelentkezned!</h2>
-            <p:commandButton id="loginButton" oncomplete="PF('loginDialog').show()"
-                             value="Login" icon="pi pi-fw pi-sign-in"
-                             styleClass="ui-button-info" update="growl"/>
-        </div>
+    <p:growl id="growl" showDetail="true" globalOnly="true"/>
 
-    </h:panelGroup>
-    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn}">
-        <p:menubar>
-            <p:menuitem value="Users" outcome="/xhtml/user.xhtml"/>
-            <p:menuitem value="Couriers" outcome="/xhtml/courier.xhtml"/>
-            <p:menuitem value="Foods" outcome="/xhtml/food.xhtml"/>
-            <p:menuitem value="Orders" outcome="/xhtml/order.xhtml"/>
-            <f:facet name="options">
-                <p:outputLabel rendered="#{loggedInUserMBean.loggedIn}" value="#{loggedInUserMBean.model.username}"
-                               style="margin-right: 10px"/>
-                <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
-                                 rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
-                                 styleClass="ui-button-info" update="@form"/>
-            </f:facet>
-        </p:menubar>
+    <ui:include src="baseMenuForAdmin.xhtml"/>
 
+
+    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">
         <p:toolbar>
             <p:toolbarGroup>
                 <p:commandButton value="New Order" actionListener="#{orderMBean.initNewOrder()}"
@@ -174,19 +155,6 @@
         </p:panelGrid>
     </h:form>
 </p:dialog>
-
-<p:dialog modal="true" id="loginDialog" widgetVar="loginDialog" header="Login">
-    <h:form id="loginDialogForm">
-        <p:outputLabel value="Username           "/>
-        <p:inputText value="#{loginRequestMBean.model.username}" required="true"/>
-        <br/><br/>
-
-        <p:outputLabel value="Password            "/>
-        <p:password value="#{loginRequestMBean.model.password}" required="true"/>
-
-        <p:separator/>
-        <p:commandButton value="Login" actionListener="#{loginRequestMBean.doLogin()}" update=":mainForm"/>
-    </h:form>
-</p:dialog>
+<ui:include src="loginForm.xhtml"/>
 </body>
 </html>

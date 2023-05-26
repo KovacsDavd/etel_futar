@@ -15,8 +15,8 @@ Content-Type: application/json
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
     "creatorID": 1,
-    "firstName": "proba2",
-    "lastName": "proba1",
+    "firstName": "proba4",
+    "lastName": "proba4",
     "modifiedDate": "2023-05-24T14:45:50.371043",
     "modifiedID": 1,
     "phoneNumber": "+36706640672"

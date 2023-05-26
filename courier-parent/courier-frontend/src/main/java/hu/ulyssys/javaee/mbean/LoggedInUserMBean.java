@@ -17,7 +17,7 @@ public class LoggedInUserMBean implements Serializable {
         return model !=null;
     }
     public boolean isAdmin() {
-        return isLoggedIn() && model.getRole().equals(UserRole.ADMIN);
+        return model.getRole().equals(UserRole.ADMIN);
     }
 
     public LoggedInUserModel getModel() {

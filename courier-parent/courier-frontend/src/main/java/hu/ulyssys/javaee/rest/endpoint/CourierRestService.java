@@ -9,6 +9,8 @@ import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
 import hu.ulyssys.javaee.service.CourierService;
 import hu.ulyssys.javaee.service.UserService;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -104,6 +106,9 @@ public class CourierRestService {
         }
         if (courierModel.getModifiedID() != null) {
             courier.setModifiedUser(userService.findById(courierModel.getModifiedID()));
+        }
+        if (courierModel.isFirstNameSameLastName(courierModel.getLastName(), courierModel.getFirstName())) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
         courier.setLastName(courierModel.getLastName());
         courier.setFirstName(courierModel.getFirstName());

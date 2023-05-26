@@ -7,7 +7,6 @@ import java.util.List;
 @Entity
 @Table(name = "app_order")
 public class Order extends AbstractEntity {
-    //TODO: Idő több mint a mostani
     @Column(name = "delivery_date", nullable = false)
     private LocalDateTime deliveryDate;
 

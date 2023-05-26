@@ -13,6 +13,9 @@ public class CourierModel {
     private String lastName;
     @Pattern(regexp = "\\+36\\d{9}", message = "Invalid phone number format")
     private String phoneNumber;
+    public boolean isFirstNameSameLastName(String lastName, String firstName){ // igaz ha azonos
+        return lastName.equals(firstName);
+    }
 
     public Long getId() {
         return id;

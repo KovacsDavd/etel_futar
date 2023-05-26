@@ -3,61 +3,64 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xml:lang="en" lang="en">
 <h:head>
     <title>Users</title>
 </h:head>
 <body>
 <h:form id="mainForm">
     <p:growl id="growl" showDetail="true" globalOnly="true"/>
-    <p:toolbar>
-        <p:toolbarGroup>
-            <p:commandButton value="New" actionListener="#{userMBean.initNewUser()}"
-                             update="@form :userDialog"
-                             oncomplete="PF('userDialog').show()"
-                             style="margin-right: 10px"/>
-            <p:commandButton rendered="#{userMBean.selectedUser.id!=null}" value="Remove"
-                             actionListener="#{userMBean.remove()}" update="@form" style="margin-right: 10px">
-                <p:confirm header="Remove" message="Are you sure?"/>
-            </p:commandButton>
-            <p:commandButton rendered="#{userMBean.selectedUser.id!=null}" value="Edit" update="@form :userDialog"
-                             oncomplete="PF('userDialog').show()"/>
-        </p:toolbarGroup>
-    </p:toolbar>
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
-        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
-    </p:confirmDialog>
+    <ui:include src="baseMenuForAdmin.xhtml"/>
+    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="New" actionListener="#{userMBean.initNewUser()}"
+                                 update="@form :userDialog"
+                                 oncomplete="PF('userDialog').show()"
+                                 style="margin-right: 10px"/>
+                <p:commandButton rendered="#{userMBean.selectedUser.id!=null}" value="Remove"
+                                 actionListener="#{userMBean.remove()}" update="@form" style="margin-right: 10px">
+                    <p:confirm header="Remove" message="Are you sure?"/>
+                </p:commandButton>
+                <p:commandButton rendered="#{userMBean.selectedUser.id!=null}" value="Edit" update="@form :userDialog"
+                                 oncomplete="PF('userDialog').show()"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+        </p:confirmDialog>
 
-    <p:dataTable id="table" value="#{userMBean.list}" var="user" rows="10"
-                 paginator="true" selectionMode="single" selection="#{userMBean.selectedUser}" rowKey="#{user.id}"
-                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+        <p:dataTable id="table" value="#{userMBean.list}" var="user" rows="10"
+                     paginator="true" selectionMode="single" selection="#{userMBean.selectedUser}" rowKey="#{user.id}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
-        <p:ajax event="rowSelect" update="@form"/>
-        <p:ajax event="rowUnselect" listener="#{userMBean.initNewUser()}" update="@form"/>
+            <p:ajax event="rowSelect" update="@form"/>
+            <p:ajax event="rowUnselect" listener="#{userMBean.initNewUser()}" update="@form"/>
 
-        <p:column toggleable="false" filterBy="#{user.id}" filterMatchMode="contains" sortBy="#{user.id}">
-            <f:facet name="header">ID</f:facet>
-            <h:outputText value="#{user.id}"/>
-        </p:column>
+            <p:column toggleable="false" filterBy="#{user.id}" filterMatchMode="contains" sortBy="#{user.id}">
+                <f:facet name="header">ID</f:facet>
+                <h:outputText value="#{user.id}"/>
+            </p:column>
 
-        <p:column filterBy="#{user.userName}" filterMatchMode="contains" sortBy="#{user.userName}">
-            <f:facet name="header">Name</f:facet>
-            <h:outputText value="#{user.userName}"/>
-        </p:column>
+            <p:column filterBy="#{user.userName}" filterMatchMode="contains" sortBy="#{user.userName}">
+                <f:facet name="header">Name</f:facet>
+                <h:outputText value="#{user.userName}"/>
+            </p:column>
 
-        <p:column filterBy="#{user.role}" filterMatchMode="contains" sortBy="#{user.role}">
-            <f:facet name="header">Role</f:facet>
-            <h:outputText value="#{user.role}"/>
-        </p:column>
+            <p:column filterBy="#{user.role}" filterMatchMode="contains" sortBy="#{user.role}">
+                <f:facet name="header">Role</f:facet>
+                <h:outputText value="#{user.role}"/>
+            </p:column>
 
-        <p:column filterBy="#{user.createdDate}" filterMatchMode="contains" sortBy="#{user.createdDate}">
-            <f:facet name="header">Created Date</f:facet>
-            <h:outputText value="#{user.createdDate}"/>
-        </p:column>
-    </p:dataTable>
+            <p:column filterBy="#{user.createdDate}" filterMatchMode="contains" sortBy="#{user.createdDate}">
+                <f:facet name="header">Created Date</f:facet>
+                <h:outputText value="#{user.createdDate}"/>
+            </p:column>
+        </p:dataTable>
+    </h:panelGroup>
 </h:form>
 
 <p:dialog modal="true" id="userDialog" widgetVar="userDialog">
@@ -67,7 +70,8 @@
             <p:inputText id="username" value="#{userMBean.selectedUser.userName}" required="true"/>
 
             <p:outputLabel rendered="#{userMBean.selectedUser.id==null}" for="password" value="Password"/>
-            <p:password rendered="#{userMBean.selectedUser.id==null}" feedback="true" id="password" value="#{userMBean.selectedUser.password}" required="true"/>
+            <p:password rendered="#{userMBean.selectedUser.id==null}" feedback="true" id="password"
+                        value="#{userMBean.selectedUser.password}" required="true"/>
 
             <p:outputLabel for="role" value="Role"/>
             <p:selectOneMenu id="role" value="#{userMBean.selectedUser.role}" required="true">
@@ -81,5 +85,6 @@
         </p:panelGrid>
     </h:form>
 </p:dialog>
+<ui:include src="loginForm.xhtml"/>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package hu.ulyssys.javaee.rest.endpoint;
 
-import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.entity.Order;
 import hu.ulyssys.javaee.entity.OrderFood;
 import hu.ulyssys.javaee.rest.model.OrderFoodModel;
@@ -9,7 +8,6 @@ import hu.ulyssys.javaee.rest.request.RestFunctionRequest;
 import hu.ulyssys.javaee.rest.response.RestFindAllResponse;
 import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
 import hu.ulyssys.javaee.service.*;
-import org.apache.xpath.operations.Or;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -20,7 +18,6 @@ import java.util.List;
 
 @Path("/order")
 public class OrderRestService {
-    //TODO: put modósítása
     @Inject
     private OrderService orderService;
     @Inject

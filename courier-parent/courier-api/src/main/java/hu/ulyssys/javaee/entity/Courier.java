@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "courier")
 public class Courier extends AbstractEntity {
- //TODO: nem lehet azonos a név
+    //TODO: nem lehet azonos a név
     @Column(name = "first_name", nullable = false, length = 500)
     private String firstName;
 
@@ -19,10 +19,8 @@ public class Courier extends AbstractEntity {
     @Pattern(regexp = "\\+36\\d{9}", message = "Invalid phone number format")
     private String phoneNumber;
 
-    public boolean isFirstNameSameLastName(){ // igaz ha azonos
-        if (lastName.equals(firstName))
-            return true;
-        return false;
+    public boolean isFirstNameSameLastName(String lastName, String firstName){ // igaz ha azonos
+        return lastName.equals(firstName);
     }
 
     public String getFirstName() {

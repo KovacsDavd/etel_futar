@@ -3,84 +3,86 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xml:lang="en" lang="en">
 <h:head>
     <title>Foods</title>
 </h:head>
 <body>
 <h:form id="mainForm">
     <p:growl id="growl" showDetail="true" globalOnly="true"/>
-    <p:toolbar>
-        <p:toolbarGroup>
-            <p:commandButton value="New" actionListener="#{foodMBean.initNewFood()}"
-                             update="@form :foodDialog"
-                             oncomplete="PF('foodDialog').show()"
-                             style="margin-right: 10px"/>
-            <p:commandButton rendered="#{foodMBean.selectedFood.id!=null}" value="Remove"
-                             actionListener="#{foodMBean.remove()}" update="@form" style="margin-right: 10px">
-                <p:confirm header="Remove" message="Are you sure?"/>
-            </p:commandButton>
-            <p:commandButton rendered="#{foodMBean.selectedFood.id!=null}" value="Edit" update="@form :foodDialog"
-                             oncomplete="PF('foodDialog').show()"/>
-        </p:toolbarGroup>
-    </p:toolbar>
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
-        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
-    </p:confirmDialog>
+    <ui:include src="baseMenuForAdmin.xhtml"/>
+    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="New" actionListener="#{foodMBean.initNewFood()}"
+                                 update="@form :foodDialog"
+                                 oncomplete="PF('foodDialog').show()"
+                                 style="margin-right: 10px"/>
+                <p:commandButton rendered="#{foodMBean.selectedFood.id!=null}" value="Remove"
+                                 actionListener="#{foodMBean.remove()}" update="@form" style="margin-right: 10px">
+                    <p:confirm header="Remove" message="Are you sure?"/>
+                </p:commandButton>
+                <p:commandButton rendered="#{foodMBean.selectedFood.id!=null}" value="Edit" update="@form :foodDialog"
+                                 oncomplete="PF('foodDialog').show()"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+        </p:confirmDialog>
 
-    <p:dataTable id="table" value="#{foodMBean.list}" var="food" rows="10"
-                 paginator="true" selectionMode="single" selection="#{foodMBean.selectedFood}" rowKey="#{food.id}"
-                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+        <p:dataTable id="table" value="#{foodMBean.list}" var="food" rows="10"
+                     paginator="true" selectionMode="single" selection="#{foodMBean.selectedFood}" rowKey="#{food.id}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
-        <p:ajax event="rowSelect" update="@form"/>
-        <p:ajax event="rowUnselect" listener="#{foodMBean.initNewFood}" update="@form"/>
+            <p:ajax event="rowSelect" update="@form"/>
+            <p:ajax event="rowUnselect" listener="#{foodMBean.initNewFood}" update="@form"/>
 
-        <p:column toggleable="false" filterBy="#{food.id}" filterMatchMode="contains" sortBy="#{food.id}">
-            <f:facet name="header">ID</f:facet>
-            <h:outputText value="#{food.id}"/>
-        </p:column>
+            <p:column toggleable="false" filterBy="#{food.id}" filterMatchMode="contains" sortBy="#{food.id}">
+                <f:facet name="header">ID</f:facet>
+                <h:outputText value="#{food.id}"/>
+            </p:column>
 
-        <p:column filterBy="#{food.name}" filterMatchMode="contains" sortBy="#{food.name}">
-            <f:facet name="header">Name</f:facet>
-            <h:outputText value="#{food.name}"/>
-        </p:column>
+            <p:column filterBy="#{food.name}" filterMatchMode="contains" sortBy="#{food.name}">
+                <f:facet name="header">Name</f:facet>
+                <h:outputText value="#{food.name}"/>
+            </p:column>
 
-        <p:column filterBy="#{food.description}" filterMatchMode="contains" sortBy="#{food.description}">
-            <f:facet name="header">Description</f:facet>
-            <h:outputText value="#{food.description}"/>
-        </p:column>
+            <p:column filterBy="#{food.description}" filterMatchMode="contains" sortBy="#{food.description}">
+                <f:facet name="header">Description</f:facet>
+                <h:outputText value="#{food.description}"/>
+            </p:column>
 
-        <p:column filterBy="#{food.createdDate}" filterMatchMode="contains" sortBy="#{food.createdDate}">
-            <f:facet name="header">Created Date</f:facet>
-            <h:outputText value="#{food.createdDate}"/>
-        </p:column>
+            <p:column filterBy="#{food.createdDate}" filterMatchMode="contains" sortBy="#{food.createdDate}">
+                <f:facet name="header">Created Date</f:facet>
+                <h:outputText value="#{food.createdDate}"/>
+            </p:column>
 
-        <p:column filterBy="#{food.modifiedDate}" filterMatchMode="contains" sortBy="#{food.modifiedDate}">
-            <f:facet name="header">Last Modified</f:facet>
-            <h:outputText value="#{food.modifiedDate}"/>
-        </p:column>
+            <p:column filterBy="#{food.modifiedDate}" filterMatchMode="contains" sortBy="#{food.modifiedDate}">
+                <f:facet name="header">Last Modified</f:facet>
+                <h:outputText value="#{food.modifiedDate}"/>
+            </p:column>
 
-        <p:column filterBy="#{food.price}" filterMatchMode="contains" sortBy="#{food.price}">
-            <f:facet name="header">Price</f:facet>
-            <h:outputText value="#{food.price}">
-                <f:convertNumber type="currency" currencySymbol=" Ft" maxFractionDigits="0"/>
-            </h:outputText>
-        </p:column>
+            <p:column filterBy="#{food.price}" filterMatchMode="contains" sortBy="#{food.price}">
+                <f:facet name="header">Price</f:facet>
+                <h:outputText value="#{food.price}">
+                    <f:convertNumber type="currency" currencySymbol=" Ft" maxFractionDigits="0"/>
+                </h:outputText>
+            </p:column>
 
-        <p:column>
-            <f:facet name="header">Created User</f:facet>
-            <h:outputText rendered="#{food.creatorUser!=null}" value="#{food.creatorUser.userName}"/>
-        </p:column>
+            <p:column>
+                <f:facet name="header">Created User</f:facet>
+                <h:outputText rendered="#{food.creatorUser!=null}" value="#{food.creatorUser.userName}"/>
+            </p:column>
 
-        <p:column>
-            <f:facet name="header">Modifier User</f:facet>
-            <h:outputText rendered="#{food.modifiedUser!=null}" value="#{food.modifiedUser.userName}"/>
-        </p:column>
-
-    </p:dataTable>
+            <p:column>
+                <f:facet name="header">Modifier User</f:facet>
+                <h:outputText rendered="#{food.modifiedUser!=null}" value="#{food.modifiedUser.userName}"/>
+            </p:column>
+        </p:dataTable>
+    </h:panelGroup>
 </h:form>
 
 <p:dialog modal="true" id="foodDialog" widgetVar="foodDialog">
@@ -103,7 +105,7 @@
             </p:selectOneMenu>
 
             <p:outputLabel for="modifierUser" value="Modifier User"/>
-            <p:selectOneMenu id="modifierUser" value="#{foodMBean.modifierUserID}" >
+            <p:selectOneMenu id="modifierUser" value="#{foodMBean.modifierUserID}">
                 <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
                 <f:selectItems value="#{foodMBean.userList}" var="modifier" itemLabel="#{modifier.userName}"
                                itemValue="#{modifier.id}"/>
@@ -114,5 +116,6 @@
         </p:panelGrid>
     </h:form>
 </p:dialog>
+<ui:include src="loginForm.xhtml"/>
 </body>
 </html>
