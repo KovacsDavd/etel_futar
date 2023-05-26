@@ -39,9 +39,6 @@ public class User extends CoreEntity {
     }
 
     public void setPassword(String password) {
-        this.password = PasswordUtils.hashPassword(password);
-    }
-    public boolean verifyPassword(String password) {
-        return PasswordUtils.verifyPassword(password, this.password);
+        this.password = password;
     }
 }

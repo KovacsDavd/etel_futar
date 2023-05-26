@@ -51,6 +51,8 @@ public class CourierMBean implements Serializable {
 
     public void initNewCourier() {
         this.selectedCourier = new Courier();
+        this.creatorUserID = null;
+        this.modifierUserID = null;
     }
 
     public void save() {
@@ -101,6 +103,23 @@ public class CourierMBean implements Serializable {
 
     public void setSelectedCourier(Courier selectedCourier) {
         this.selectedCourier = selectedCourier;
+
+        if (selectedCourier != null) {
+            if (selectedCourier.getCreatorUser() != null) {
+                creatorUserID = selectedCourier.getCreatorUser().getId();
+            } else {
+                creatorUserID = null;
+            }
+
+            if (selectedCourier.getModifiedUser() != null) {
+                modifierUserID = selectedCourier.getModifiedUser().getId();
+            } else {
+                modifierUserID = null;
+            }
+        } else {
+            creatorUserID = null;
+            modifierUserID = null;
+        }
     }
 
     public UserService getUserService() {

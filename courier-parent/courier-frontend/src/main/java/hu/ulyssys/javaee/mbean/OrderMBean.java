@@ -31,7 +31,6 @@ public class OrderMBean implements Serializable {
 
     List<User> userList;
     List<Courier> courierList;
-    List<String> publicSpaceNature = new ArrayList<>();
 
     private Long modifierUserID;
     private Long creatorUserID;
@@ -48,9 +47,6 @@ public class OrderMBean implements Serializable {
 
     @PostConstruct
     private void init() {
-        publicSpaceNature.add("utca");
-        publicSpaceNature.add("köz");
-        publicSpaceNature.add("lugas");
         load();
     }
 
@@ -63,6 +59,9 @@ public class OrderMBean implements Serializable {
 
     public void initNewOrder() {
         this.selectedOrder = new Order();
+        this.creatorUserID = null;
+        this.modifierUserID = null;
+        this.courierID = null;
     }
 
     public void save() {
@@ -175,13 +174,28 @@ public class OrderMBean implements Serializable {
 
     public void setSelectedOrder(Order selectedOrder) {
         this.selectedOrder = selectedOrder;
-    }
 
-    public List<String> getPublicSpaceNature() {
-        return publicSpaceNature;
-    }
+        if (selectedOrder != null) {
+            if (selectedOrder.getCreatorUser() != null) {
+                creatorUserID = selectedOrder.getCreatorUser().getId();
+            } else {
+                creatorUserID = null;
+            }
 
-    public void setPublicSpaceNature(List<String> publicSpaceNature) {
-        this.publicSpaceNature = publicSpaceNature;
+            if (selectedOrder.getModifiedUser() != null) {
+                modifierUserID = selectedOrder.getModifiedUser().getId();
+            } else {
+                modifierUserID = null;
+            }
+
+            if (selectedOrder.getCourier() != null) {
+                courierID = selectedOrder.getCreatorUser().getId();
+            } else {
+                courierID = null;
+            }
+        } else {
+            creatorUserID = null;
+            modifierUserID = null;
+        }
     }
 }

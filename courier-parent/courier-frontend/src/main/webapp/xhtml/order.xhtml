@@ -9,103 +9,125 @@
 </h:head>
 <body>
 <h:form id="mainForm">
-    <p:menubar>
-        <p:menuitem value="Users" outcome="/xhtml/user.xhtml"/>
-        <p:menuitem value="Couriers" outcome="/xhtml/courier.xhtml"/>
-        <p:menuitem value="Foods" outcome="/xhtml/food.xhtml"/>
-        <p:menuitem value="Orders" outcome="/xhtml/order.xhtml"/>
-        <f:facet name="options">
-            <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
-            <p:button value="Log In" icon="pi pi-fw pi-sign-in" styleClass="ui-button-info"/>
-        </f:facet>
-    </p:menubar>
-    <p:growl id="growl" showDetail="true" globalOnly="true"/>
-    <p:toolbar>
-        <p:toolbarGroup>
-            <p:commandButton value="New Order" actionListener="#{orderMBean.initNewOrder()}"
-                             update="@form :orderDialog"
-                             oncomplete="PF('orderDialog').show()"
-                             style="margin-right: 10px"/>
-            <p:commandButton rendered="#{orderMBean.selectedOrder.id!=null}" value="Remove"
-                             actionListener="#{orderMBean.remove()}" update="@form" style="margin-right: 10px">
-                <p:confirm header="Remove" message="Are you sure?"/>
-            </p:commandButton>
-            <p:commandButton rendered="#{orderMBean.selectedOrder.id!=null}" style="margin-right: 10px" value="Edit" update="@form :orderDialog"
-                             oncomplete="PF('orderDialog').show()"/>
+    <p:growl id="growl" showDetail="true" globalOnly="true" />
+    <h:panelGroup rendered="#{!loggedInUserMBean.loggedIn}">
+        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h2 style="text-align: center;">Muszáj bejelentkezned!</h2>
+            <p:commandButton id="loginButton" oncomplete="PF('loginDialog').show()"
+                             value="Login" icon="pi pi-fw pi-sign-in"
+                             styleClass="ui-button-info" update="growl"/>
+        </div>
 
-            <p:commandButton id="columnToggler" icon="pi pi-table" style="margin-right: 10px"/>
-            <p:columnToggler trigger="columnToggler" datasource="table" style="margin-right: 10px"/>
-        </p:toolbarGroup>
-    </p:toolbar>
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
-        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
-    </p:confirmDialog>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn}">
+        <p:menubar>
+            <p:menuitem value="Users" outcome="/xhtml/user.xhtml"/>
+            <p:menuitem value="Couriers" outcome="/xhtml/courier.xhtml"/>
+            <p:menuitem value="Foods" outcome="/xhtml/food.xhtml"/>
+            <p:menuitem value="Orders" outcome="/xhtml/order.xhtml"/>
+            <f:facet name="options">
+                <p:outputLabel rendered="#{loggedInUserMBean.loggedIn}" value="#{loggedInUserMBean.model.username}"
+                               style="margin-right: 10px"/>
+                <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
+                                 rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
+                                 styleClass="ui-button-info" update="@form"/>
+            </f:facet>
+        </p:menubar>
 
-    <p:dataTable id="table" value="#{orderMBean.list}" var="order" rows="10"
-                 paginator="true" selectionMode="single" selection="#{orderMBean.selectedOrder}" rowKey="#{order.id}"
-                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="New Order" actionListener="#{orderMBean.initNewOrder()}"
+                                 update="@form :orderDialog"
+                                 oncomplete="PF('orderDialog').show()"
+                                 style="margin-right: 10px"/>
+                <p:commandButton rendered="#{orderMBean.selectedOrder.id!=null}" value="Remove"
+                                 actionListener="#{orderMBean.remove()}" update="@form" style="margin-right: 10px">
+                    <p:confirm header="Remove" message="Are you sure?"/>
+                </p:commandButton>
+                <p:commandButton rendered="#{orderMBean.selectedOrder.id!=null}" style="margin-right: 10px" value="Edit"
+                                 update="@form :orderDialog"
+                                 oncomplete="PF('orderDialog').show()"/>
 
-        <p:ajax event="rowSelect" update="@form"/>
-        <p:ajax event="rowUnselect" listener="#{orderMBean.initNewOrder()}" update="@form"/>
+                <p:commandButton id="columnToggler" icon="pi pi-table" style="margin-right: 10px"/>
+                <p:columnToggler trigger="columnToggler" datasource="table" style="margin-right: 10px"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+        </p:confirmDialog>
 
-        <p:column toggleable="false" filterBy="#{order.id}" filterMatchMode="contains" sortBy="#{order.id}">
-            <f:facet name="header">ID</f:facet>
-            <h:outputText value="#{order.id}"/>
-        </p:column>
+        <p:dataTable id="table" value="#{orderMBean.list}" var="order" rows="10"
+                     paginator="true" selectionMode="single" selection="#{orderMBean.selectedOrder}"
+                     rowKey="#{order.id}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
-        <p:column filterBy="#{order.settlement}" filterMatchMode="contains" sortBy="#{order.settlement}">
-            <f:facet name="header">Settlement</f:facet>
-            <h:outputText value="#{order.settlement}"/>
-        </p:column>
+            <p:ajax event="rowSelect" update="@form"/>
+            <p:ajax event="rowUnselect" listener="#{orderMBean.initNewOrder()}" update="@form"/>
 
-        <p:column filterBy="#{order.publicSpace}" filterMatchMode="contains" sortBy="#{order.publicSpace}">
-            <f:facet name="header">Public Space</f:facet>
-            <h:outputText value="#{order.publicSpace}"/>
-        </p:column>
+            <p:column toggleable="false" filterBy="#{order.id}" filterMatchMode="contains" sortBy="#{order.id}">
+                <f:facet name="header">ID</f:facet>
+                <h:outputText value="#{order.id}"/>
+            </p:column>
 
-        <p:column filterBy="#{order.publicSpaceNature}" filterMatchMode="contains" sortBy="#{order.publicSpaceNature}">
-            <f:facet name="header">Public Space Nature</f:facet>
-            <h:outputText value="#{order.publicSpaceNature}"/>
-        </p:column>
+            <p:column filterBy="#{order.settlement}" filterMatchMode="contains" sortBy="#{order.settlement}">
+                <f:facet name="header">Settlement</f:facet>
+                <h:outputText value="#{order.settlement}"/>
+            </p:column>
 
-        <p:column filterBy="#{order.houseNumber}" filterMatchMode="contains" sortBy="#{order.houseNumber}">
-            <f:facet name="header">House Number</f:facet>
-            <h:outputText value="#{order.houseNumber}"/>
-        </p:column>
+            <p:column filterBy="#{order.publicSpace}" filterMatchMode="contains" sortBy="#{order.publicSpace}">
+                <f:facet name="header">Public Space</f:facet>
+                <h:outputText value="#{order.publicSpace}"/>
+            </p:column>
 
-        <p:column toggleable="false" filterBy="#{order.deliveryDate}" filterMatchMode="contains" sortBy="#{order.deliveryDate}">
-            <f:facet name="header">Delivery Date</f:facet>
-            <h:outputText value="#{order.deliveryDate}"/>
-        </p:column>
+            <p:column filterBy="#{order.publicSpaceNature}" filterMatchMode="contains"
+                      sortBy="#{order.publicSpaceNature}">
+                <f:facet name="header">Public Space Nature</f:facet>
+                <h:outputText value="#{order.publicSpaceNature}"/>
+            </p:column>
 
-        <p:column toggleable="false" filterBy="#{order.courier}" filterMatchMode="contains" sortBy="#{order.courier}">
-            <f:facet name="header">Courier</f:facet>
-            <h:outputText rendered="#{order.courier!=null}" value="#{order.courier.lastName} #{order.courier.firstName}"/>
-        </p:column>
+            <p:column filterBy="#{order.houseNumber}" filterMatchMode="contains" sortBy="#{order.houseNumber}">
+                <f:facet name="header">House Number</f:facet>
+                <h:outputText value="#{order.houseNumber}"/>
+            </p:column>
 
-        <p:column toggleable="false" filterBy="#{order.creatorUser}" filterMatchMode="contains" sortBy="#{order.creatorUser}">
-            <f:facet name="header">Created User</f:facet>
-            <h:outputText rendered="#{order.creatorUser!=null}" value="#{order.creatorUser.userName}"/>
-        </p:column>
+            <p:column toggleable="false" filterBy="#{order.deliveryDate}" filterMatchMode="contains"
+                      sortBy="#{order.deliveryDate}">
+                <f:facet name="header">Delivery Date</f:facet>
+                <h:outputText value="#{order.deliveryDate}"/>
+            </p:column>
 
-        <p:column filterBy="#{order.modifiedUser}" filterMatchMode="contains" sortBy="#{order.modifiedUser}">
-            <f:facet name="header">Modifier User</f:facet>
-            <h:outputText rendered="#{order.modifiedUser!=null}" value="#{order.modifiedUser.userName}"/>
-        </p:column>
+            <p:column toggleable="false" filterBy="#{order.courier}" filterMatchMode="contains"
+                      sortBy="#{order.courier}">
+                <f:facet name="header">Courier</f:facet>
+                <h:outputText rendered="#{order.courier!=null}"
+                              value="#{order.courier.lastName} #{order.courier.firstName}"/>
+            </p:column>
 
-        <p:column filterBy="#{order.createdDate}" filterMatchMode="contains" sortBy="#{order.createdDate}">
-            <f:facet name="header">Created Date</f:facet>
-            <h:outputText value="#{order.createdDate}"/>
-        </p:column>
+            <p:column toggleable="false" filterBy="#{order.creatorUser}" filterMatchMode="contains"
+                      sortBy="#{order.creatorUser}">
+                <f:facet name="header">Created User</f:facet>
+                <h:outputText rendered="#{order.creatorUser!=null}" value="#{order.creatorUser.userName}"/>
+            </p:column>
 
-        <p:column filterBy="#{order.modifiedDate}" filterMatchMode="contains" sortBy="#{order.modifiedDate}">
-            <f:facet name="header">Last Modified</f:facet>
-            <h:outputText value="#{order.modifiedDate}"/>
-        </p:column>
-    </p:dataTable>
+            <p:column filterBy="#{order.modifiedUser}" filterMatchMode="contains" sortBy="#{order.modifiedUser}">
+                <f:facet name="header">Modifier User</f:facet>
+                <h:outputText rendered="#{order.modifiedUser!=null}" value="#{order.modifiedUser.userName}"/>
+            </p:column>
+
+            <p:column filterBy="#{order.createdDate}" filterMatchMode="contains" sortBy="#{order.createdDate}">
+                <f:facet name="header">Created Date</f:facet>
+                <h:outputText value="#{order.createdDate}"/>
+            </p:column>
+
+            <p:column filterBy="#{order.modifiedDate}" filterMatchMode="contains" sortBy="#{order.modifiedDate}">
+                <f:facet name="header">Last Modified</f:facet>
+                <h:outputText value="#{order.modifiedDate}"/>
+            </p:column>
+        </p:dataTable>
+    </h:panelGroup>
 </h:form>
 
 <p:dialog modal="true" id="orderDialog" widgetVar="orderDialog">
@@ -115,7 +137,8 @@
             <p:outputLabel for="courierUser" value="Courier User"/>
             <p:selectOneMenu id="courierUser" value="#{orderMBean.courierID}">
                 <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{orderMBean.courierList}" var="courier" itemLabel="#{courier.firstName} #{courier.lastName}"
+                <f:selectItems value="#{orderMBean.courierList}" var="courier"
+                               itemLabel="#{courier.firstName} #{courier.lastName}"
                                itemValue="#{courier.id}"/>
             </p:selectOneMenu>
 
@@ -140,7 +163,7 @@
             </p:selectOneMenu>
 
             <p:outputLabel for="modifierUser" value="Modifier User"/>
-            <p:selectOneMenu id="modifierUser" value="#{orderMBean.modifierUserID}" >
+            <p:selectOneMenu id="modifierUser" value="#{orderMBean.modifierUserID}">
                 <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
                 <f:selectItems value="#{orderMBean.userList}" var="modifier" itemLabel="#{modifier.userName}"
                                itemValue="#{modifier.id}"/>
@@ -149,6 +172,20 @@
             <p:commandButton value="Close" oncomplete="PF('orderDialog').hide()"/>
             <p:commandButton value="Save" actionListener="#{orderMBean.save}" update=":mainForm"/>
         </p:panelGrid>
+    </h:form>
+</p:dialog>
+
+<p:dialog modal="true" id="loginDialog" widgetVar="loginDialog" header="Login">
+    <h:form id="loginDialogForm">
+        <p:outputLabel value="Username           "/>
+        <p:inputText value="#{loginRequestMBean.model.username}" required="true"/>
+        <br/><br/>
+
+        <p:outputLabel value="Password            "/>
+        <p:password value="#{loginRequestMBean.model.password}" required="true"/>
+
+        <p:separator/>
+        <p:commandButton value="Login" actionListener="#{loginRequestMBean.doLogin()}" update=":mainForm"/>
     </h:form>
 </p:dialog>
 </body>

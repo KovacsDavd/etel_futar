@@ -55,6 +55,8 @@ public class FoodMBean implements Serializable {
 
     public void initNewFood() {
         this.selectedFood = new Food();
+        this.creatorUserID = null;
+        this.modifierUserID = null;
     }
 
     public void save() {
@@ -106,15 +108,20 @@ public class FoodMBean implements Serializable {
     public void setSelectedFood(Food selectedFood) {
         this.selectedFood = selectedFood;
 
-        if (selectedFood != null && selectedFood.getModifiedUser() != null) {
-            creatorUserID = selectedFood.getCreatorUser().getId();
+        if (selectedFood != null) {
+            if (selectedFood.getCreatorUser() != null) {
+                creatorUserID = selectedFood.getCreatorUser().getId();
+            } else {
+                creatorUserID = null;
+            }
+
+            if (selectedFood.getModifiedUser() != null) {
+                modifierUserID = selectedFood.getModifiedUser().getId();
+            } else {
+                modifierUserID = null;
+            }
         } else {
             creatorUserID = null;
-        }
-
-        if (selectedFood != null && selectedFood.getModifiedUser() != null) {
-            modifierUserID = selectedFood.getModifiedUser().getId();
-        } else {
             modifierUserID = null;
         }
     }

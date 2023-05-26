@@ -3,6 +3,7 @@ package hu.ulyssys.javaee.mbean;
 
 import hu.ulyssys.javaee.entity.User;
 import hu.ulyssys.javaee.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
@@ -49,7 +50,7 @@ public class UserMBean implements Serializable {
     public void save() {
         if (selectedUser.getId() == null) {
             selectedUser.setCreatedDate(time());
-            selectedUser.setPassword(selectedUser.getPassword());
+            selectedUser.setPassword(hashPassword(selectedUser.getPassword()));
             userService.add(selectedUser);
         } else {
             userService.update(selectedUser);
@@ -63,7 +64,9 @@ public class UserMBean implements Serializable {
         return now;
     }
 
-
+    private String hashPassword(String passwd) {
+        return DigestUtils.md5Hex(passwd);
+    }
 
     public UserService getUserService() {
         return userService;
