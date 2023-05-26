@@ -69,6 +69,7 @@ public class FoodMBean implements Serializable {
             selectedFood.setCreatorUser(userService.findById(creatorUserID));
             service.add(selectedFood);
         } else {
+            selectedFood.setCreatorUser(userService.findById(creatorUserID));
             selectedFood.setModifiedDate(time());
             service.update(selectedFood);
         }
