@@ -1,11 +1,23 @@
 package hu.ulyssys.javaee.mbean.model;
 
+import hu.ulyssys.javaee.entity.CartItem;
 import hu.ulyssys.javaee.entity.UserRole;
+
+import java.util.List;
 
 public class LoggedInUserModel {
     private Long id;
     private String username;
     private UserRole role;
+    private List<CartItem> cartItems;
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
 
     public Long getId() {
         return id;

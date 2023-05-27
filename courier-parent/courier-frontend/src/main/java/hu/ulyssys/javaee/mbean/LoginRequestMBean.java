@@ -3,6 +3,7 @@ package hu.ulyssys.javaee.mbean;
 import hu.ulyssys.javaee.entity.User;
 import hu.ulyssys.javaee.mbean.model.LoggedInUserModel;
 import hu.ulyssys.javaee.mbean.model.LoginModel;
+import hu.ulyssys.javaee.service.CartService;
 import hu.ulyssys.javaee.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.PrimeFaces;
@@ -13,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 
 @Named
 @RequestScoped
@@ -28,6 +30,8 @@ public class LoginRequestMBean {
 
     @Inject
     private UserService userService;
+    @Inject
+    private CartService cartService;
 
     public void doLogin() {
         try {
@@ -44,7 +48,10 @@ public class LoginRequestMBean {
             loggedInUserModel.setUsername(user.getUserName());
             loggedInUserModel.setId(user.getId());
             loggedInUserModel.setRole(user.getRole());
+            //loggedInUserModel.setCartItems(new ArrayList<>());
             bean.setModel(loggedInUserModel);
+            Long userId = loggedInUserModel.getId();
+            cartService.getOrCreateCart(userId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres Bejelentkezés", ""));
             PrimeFaces.current().executeScript("PF('loginDialog').hide()");
         } catch (Exception e) {
@@ -54,6 +61,7 @@ public class LoginRequestMBean {
     }
 
     public void doLogout() {
+        bean.deleteCart();
         bean.setModel(null);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres Kijelentkezés", ""));
     }

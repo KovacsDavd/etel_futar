@@ -83,4 +83,6 @@ public class Order extends AbstractEntity {
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
+
+
 }

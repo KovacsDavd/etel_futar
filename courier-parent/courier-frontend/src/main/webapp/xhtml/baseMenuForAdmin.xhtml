@@ -17,9 +17,9 @@
 <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
     <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
         <h2 style="text-align: center;">Nincs elég jogosultságod!</h2>
-        <p:commandButton id="loginButton2" oncomplete="PF('loginDialog').show()"
-                         value="Login" icon="pi pi-fw pi-sign-in"
-                         styleClass="ui-button-info" update="growl"/>
+        <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
+                         rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
+                         styleClass="ui-button-info" update="@form"/>
     </div>
 </h:panelGroup>
 <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">

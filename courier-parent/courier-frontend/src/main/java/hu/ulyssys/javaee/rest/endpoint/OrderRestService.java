@@ -24,8 +24,6 @@ public class OrderRestService {
     private UserService userService;
     @Inject
     private CourierService courierService;
-    @Inject
-    private OrderFoodService orderFoodService;
 
     @Inject
     private FoodService foodService;

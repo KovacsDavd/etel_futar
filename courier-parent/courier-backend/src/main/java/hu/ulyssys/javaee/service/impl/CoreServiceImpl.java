@@ -34,8 +34,9 @@ public abstract class CoreServiceImpl<T extends CoreEntity> implements CoreServi
         entityDAO.remove(entity.getId());
     }
 
-    @TransactionAttribute(TransactionAttributeType.NEVER)
+
     @Override
+    @TransactionAttribute(TransactionAttributeType.NEVER)
     public T findById(Long id) {
         return entityDAO.findById(id);
     }

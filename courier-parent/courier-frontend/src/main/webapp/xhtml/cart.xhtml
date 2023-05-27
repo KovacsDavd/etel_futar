@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+   <title>Cart Test</title>
+</h:head>
+<h:body>
+   <h3>Add Food to Cart:</h3>
+   <h:form>
+      <h:selectOneMenu value="#{cartMBean.selectedFood}">
+         <f:selectItem itemValue="food1" itemLabel="Food 1" />
+         <f:selectItem itemValue="food2" itemLabel="Food 2" />
+         <f:selectItem itemValue="food3" itemLabel="Food 3" />
+      </h:selectOneMenu>
+      <h:commandButton value="Add to Cart" action="#{cartMBean.addToCart}" />
+   </h:form>
+
+   <h3>Remove Food from Cart:</h3>
+   <h:form>
+      <h:selectOneMenu value="#{cartMBean.selectedFood}">
+         <f:selectItems value="#{cartMBean.loggedInUserMBean.model.cartItems}" var="item"
+                        itemValue="#{item.food}" itemLabel="#{item.food.name}" />
+      </h:selectOneMenu>
+      <h:commandButton value="Remove from Cart" action="#{cartMBean.removeFromCart}" />
+   </h:form>
+
+   <h3>Clear Cart:</h3>
+   <h:form>
+      <h:commandButton value="Clear Cart" action="#{cartMBean.clearCart}" />
+   </h:form>
+</h:body>
+</html>

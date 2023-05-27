@@ -17,7 +17,7 @@ public class UserDAOImpl extends CoreDAOImpl<User> implements UserDAO {
 
     @Override
     public User findByUsername(String username) {
-        TypedQuery<User> query = getEntityManager().createNamedQuery(User.FIND_BY_USERNAME, User.class);
+        TypedQuery<User> query = getEntityManager().createQuery("select u from User u where u.username = :username", User.class);
         query.setParameter("username", username);
         List<User> userList = query.getResultList();
         if (userList.isEmpty()) {

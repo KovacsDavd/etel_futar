@@ -3,11 +3,9 @@ package hu.ulyssys.javaee.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@NamedQuery(name = User.FIND_BY_USERNAME, query = "select u from User u where u.username=:username")
 @Entity
 @Table(name = "app_user")
 public class User extends CoreEntity {
-    public static final String FIND_BY_USERNAME = "User.findByUsername";
     @Column(name = "username", nullable = false, length = 200, unique = true)
     private String username;
 
