@@ -3,11 +3,16 @@ package hu.ulyssys.javaee.mbean;
 import hu.ulyssys.javaee.entity.CartItem;
 import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.service.CartService;
+import hu.ulyssys.javaee.service.FoodService;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -18,39 +23,27 @@ public class CartMBean implements Serializable {
 
     @Inject
     private CartService cartService;
+    List<CartItem> list;
 
     private Food selectedFood;
 
-    public void addToCart() {
-        if (loggedInUserMBean.isLoggedIn()) {
-            Long userId = loggedInUserMBean.getModel().getId();
-            cartService.addToCart(userId, selectedFood);
-            loggedInUserMBean.getModel().setCartItems(cartService.getCartItems(userId));
-        }
+    private void load() {
+        list = cartService.getCartItems(loggedInUserMBean.getModel().getId());
     }
 
-    public void removeFromCart() {
-        if (loggedInUserMBean.isLoggedIn()) {
-            Long userId = loggedInUserMBean.getModel().getId();
-            cartService.removeFromCart(userId, selectedFood);
-            loggedInUserMBean.getModel().setCartItems(cartService.getCartItems(userId));
-        }
+    @PostConstruct
+    private void init() {
+        load();
+    }
+
+
+    public void removeFromCart(CartItem food) {
+        cartService.removeFromCart(loggedInUserMBean.getModel().getId(), food);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres eltávolítás", ""));
     }
 
     public void clearCart() {
-        if (loggedInUserMBean.isLoggedIn()) {
-            Long userId = loggedInUserMBean.getModel().getId();
-            cartService.clearCart(userId);
-            loggedInUserMBean.getModel().setCartItems(cartService.getCartItems(userId));
-        }
-    }
-
-    public List<CartItem> getCartItems() {
-        if (loggedInUserMBean.isLoggedIn()) {
-            Long userId = loggedInUserMBean.getModel().getId();
-            return cartService.getCartItems(userId);
-        }
-        return null;
+        cartService.clearCart(loggedInUserMBean.getModel().getId());
     }
 
     public Food getSelectedFood() {
@@ -75,5 +68,15 @@ public class CartMBean implements Serializable {
 
     public void setCartService(CartService cartService) {
         this.cartService = cartService;
+    }
+
+
+    public List<CartItem> getList() {
+        Long userId = loggedInUserMBean.getModel().getId();
+        return cartService.getCartItems(userId);
+    }
+
+    public void setList(List<CartItem> list) {
+        this.list = list;
     }
 }

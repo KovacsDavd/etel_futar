@@ -27,6 +27,7 @@ public class CartServiceImpl implements CartService {
     @Inject
     private CartItemDAO cartItemDAO;
 
+    @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Cart getOrCreateCart(Long userId) {
         Cart cart = cartDAO.findByUserId(userId);
@@ -40,7 +41,7 @@ public class CartServiceImpl implements CartService {
 
         return cart;
     }
-
+    @Override
     public void addToCart(Long userId, Food food) {
         Cart cart = getOrCreateCart(userId);
         CartItem newCartItem = new CartItem();
@@ -50,7 +51,8 @@ public class CartServiceImpl implements CartService {
         cartDAO.update(cart);
     }
 
-    public void removeFromCart(Long userId, Food food) {
+    @Override
+    public void removeFromCart(Long userId, CartItem food) {
         Cart cart = getOrCreateCart(userId);
         CartItem cartItem = findCartItemByFood(cart, food);
         if (cartItem != null) {
@@ -59,28 +61,29 @@ public class CartServiceImpl implements CartService {
             cartDAO.update(cart);
         }
     }
+    @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public void clearCart(Long userId) {
         Cart cart = getOrCreateCart(userId);
         cart.getItems().clear();
         cartDAO.update(cart);
     }
-
+    @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public List<CartItem> getCartItems(Long userId) {
         Cart cart = getOrCreateCart(userId);
         return cart.getItems();
     }
-
     @Override
     public void deleteCart(Long id) {
         cartDAO.delete(id);
     }
 
+    @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public CartItem findCartItemByFood(Cart cart, Food food) {
+    public CartItem findCartItemByFood(Cart cart, CartItem food) {
         for (CartItem cartItem : cart.getItems()) {
-            if (cartItem.getFood().equals(food)) {
+            if (cartItem.getFood().getId()==food.getFood().getId()) {
                 return cartItem;
             }
         }

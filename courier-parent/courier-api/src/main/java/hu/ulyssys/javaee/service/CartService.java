@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface CartService {
     void addToCart(Long userId, Food food);
-    void removeFromCart(Long userId, Food food);
+    void removeFromCart(Long userId, CartItem food);
     void clearCart(Long userId);
-    CartItem findCartItemByFood(Cart cart, Food food);
+    CartItem findCartItemByFood(Cart cart, CartItem food);
     Cart getOrCreateCart(Long userId);
     List<CartItem> getCartItems(Long userId);
     void deleteCart(Long id);

@@ -18,13 +18,6 @@ public class LoggedInUserMBean implements Serializable {
     @Inject
     private CartService cartService;
 
-    /*@PostConstruct
-    public void init() {
-        if (isLoggedIn()) {
-            Long userId = model.getId();
-            cartService.getOrCreateCart(userId);
-        }
-    }*/
     public void deleteCart() {
         Long userId = model.getId();
         cartService.deleteCart(userId);

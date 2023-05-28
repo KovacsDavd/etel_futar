@@ -1,32 +1,65 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en" xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-   <title>Cart Test</title>
+    <title>Cart</title>
 </h:head>
 <h:body>
-   <h3>Add Food to Cart:</h3>
-   <h:form>
-      <h:selectOneMenu value="#{cartMBean.selectedFood}">
-         <f:selectItem itemValue="food1" itemLabel="Food 1" />
-         <f:selectItem itemValue="food2" itemLabel="Food 2" />
-         <f:selectItem itemValue="food3" itemLabel="Food 3" />
-      </h:selectOneMenu>
-      <h:commandButton value="Add to Cart" action="#{cartMBean.addToCart}" />
-   </h:form>
+    <h:form id="mainForm">
+        <p:growl id="growl" showDetail="true" globalOnly="true"/>
+        <h:panelGroup rendered="#{!loggedInUserMBean.loggedIn}">
+            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <h2 style="text-align: center;">Muszáj bejelentkezned!</h2>
+                <p:commandButton id="loginButton" oncomplete="PF('loginDialog').show()"
+                                 value="Login" icon="pi pi-fw pi-sign-in"
+                                 styleClass="ui-button-info" update="growl"/>
+            </div>
+        </h:panelGroup>
 
-   <h3>Remove Food from Cart:</h3>
-   <h:form>
-      <h:selectOneMenu value="#{cartMBean.selectedFood}">
-         <f:selectItems value="#{cartMBean.loggedInUserMBean.model.cartItems}" var="item"
-                        itemValue="#{item.food}" itemLabel="#{item.food.name}" />
-      </h:selectOneMenu>
-      <h:commandButton value="Remove from Cart" action="#{cartMBean.removeFromCart}" />
-   </h:form>
+        <p:menubar>
+            <f:facet name="options">
+                <p:button value="Home Page" outcome="/xhtml/index.xhtml" rendered="#{loggedInUserMBean.loggedIn}"
+                          styleClass="ui-button-info" style="margin-right: 10px"/>
+                <p:button value="Order History" outcome="/xhtml/cart.xhtml" rendered="#{loggedInUserMBean.loggedIn}"
+                          styleClass="ui-button-info" style="margin-right: 10px"/>
 
-   <h3>Clear Cart:</h3>
-   <h:form>
-      <h:commandButton value="Clear Cart" action="#{cartMBean.clearCart}" />
-   </h:form>
+                <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
+                                 rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
+                                 styleClass="ui-button-info" update="@form"/>
+            </f:facet>
+        </p:menubar>
+
+        <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
+            <p:dataTable id="table" value="#{cartMBean.list}" var="food" rows="10"
+                         paginator="true" selectionMode="single" rowKey="#{food.id}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <p:column filterBy="#{food.food.name}" filterMatchMode="contains" sortBy="#{food.food.name}">
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{food.food.name}"/>
+                </p:column>
+
+                <p:column filterBy="#{food.food.description}" filterMatchMode="contains" sortBy="#{food.food.description}">
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{food.food.description}"/>
+                </p:column>
+
+                <p:column filterBy="#{food.food.price}" filterMatchMode="contains" sortBy="#{food.food.price}">
+                    <f:facet name="header">Price</f:facet>
+                    <h:outputText value="#{food.food.price}">
+                        <f:convertNumber type="currency" currencySymbol=" Ft" maxFractionDigits="0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <p:commandButton value="Remove" actionListener="#{cartMBean.removeFromCart(food)}"
+                                     update=":mainForm :mainForm:growl" styleClass="ui-button-info"/>
+                </p:column>
+            </p:dataTable>
+        </h:panelGroup>
+    </h:form>
+
+    <ui:include src="loginForm.xhtml"/>
 </h:body>
 </html>

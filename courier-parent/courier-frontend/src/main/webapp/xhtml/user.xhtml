@@ -12,7 +12,7 @@
     <p:growl id="growl" showDetail="true" globalOnly="true"/>
     <ui:include src="baseMenuForAdmin.xhtml"/>
     <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">
-        <p:toolbar>
+        <p:toolbar>0
             <p:toolbarGroup>
                 <p:commandButton value="New" actionListener="#{userMBean.initNewUser()}"
                                  update="@form :userDialog"
