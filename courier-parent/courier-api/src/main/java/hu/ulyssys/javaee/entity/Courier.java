@@ -8,7 +8,6 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "courier")
 public class Courier extends AbstractEntity {
-    //TODO: nem lehet azonos a név
     @Column(name = "first_name", nullable = false, length = 500)
     private String firstName;
 

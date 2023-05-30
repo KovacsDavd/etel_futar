@@ -1,11 +1,7 @@
 package hu.ulyssys.javaee.mbean;
 
-import hu.ulyssys.javaee.entity.Courier;
-import hu.ulyssys.javaee.entity.Order;
-import hu.ulyssys.javaee.entity.User;
-import hu.ulyssys.javaee.service.CourierService;
-import hu.ulyssys.javaee.service.OrderService;
-import hu.ulyssys.javaee.service.UserService;
+import hu.ulyssys.javaee.entity.*;
+import hu.ulyssys.javaee.service.*;
 import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
@@ -28,16 +24,22 @@ public class OrderMBean implements Serializable {
     private UserService userService;
     @Inject
     private CourierService courierService;
+    @Inject
+    private FoodService foodService;
+    @Inject
+    private CartService cartService;
+
+    @Inject
+    private LoggedInUserMBean loggedInUserMBean;
 
     List<User> userList;
     List<Courier> courierList;
-
-    private Long modifierUserID;
-    private Long creatorUserID;
     private Long courierID;
 
     List<Order> list = new ArrayList<>();
+    List<Order> userOrderList;
     private Order selectedOrder = new Order();
+    private Order order = new Order();
 
     private void load() {
         list = orderService.getAll();
@@ -59,17 +61,19 @@ public class OrderMBean implements Serializable {
 
     public void initNewOrder() {
         this.selectedOrder = new Order();
-        this.creatorUserID = null;
-        this.modifierUserID = null;
         this.courierID = null;
     }
 
+    public List<Order> getUserOrderList() {
+        userOrderList = orderService.getListByUserId(loggedInUserMBean.getModel().getId());
+        return userOrderList;
+    }
+
+    public void setUserOrderList(List<Order> userOrderList) {
+        this.userOrderList = userOrderList;
+    }
+
     public void save() {
-        if (modifierUserID != null) {
-            selectedOrder.setModifiedUser(userService.findById(modifierUserID));
-        } else {
-            selectedOrder.setModifiedUser(null);
-        }
         if (courierID != null) {
             selectedOrder.setCourier(courierService.findById(courierID));
         } else {
@@ -78,12 +82,12 @@ public class OrderMBean implements Serializable {
 
         if (selectedOrder.getId() == null) {
             selectedOrder.setCreatedDate(time());
-            selectedOrder.setCreatorUser(userService.findById(creatorUserID));
+            selectedOrder.setCreatorUser(userService.findById(loggedInUserMBean.getModel().getId()));
             selectedOrder.setDeliveryDate(time().plusHours(1));
             orderService.add(selectedOrder);
         } else {
-            selectedOrder.setCreatorUser(userService.findById(creatorUserID));
             selectedOrder.setModifiedDate(time());
+            selectedOrder.setModifiedUser(userService.findById(loggedInUserMBean.getModel().getId()));
             selectedOrder.setDeliveryDate(time().plusHours(1));
             orderService.update(selectedOrder);
         }
@@ -91,6 +95,30 @@ public class OrderMBean implements Serializable {
         load();
         PrimeFaces.current().executeScript("PF('orderDialog').hide()");
     }
+
+    public String saveFromUser() {
+        order.setCreatorUser(userService.findById(loggedInUserMBean.getModel().getId()));
+        order.setModifiedUser(null);
+        order.setCreatedDate(time());
+        order.setModifiedDate(null);
+        order.setCourier(null);
+        order.setDeliveryDate(time().plusHours(1));
+
+        List<OrderFood> orderFoods = new ArrayList<>();
+        Cart cart = cartService.getCart(loggedInUserMBean.getModel().getId());
+        List<CartItem> cartItems = cart.getItems();
+        for (CartItem cartItem : cartItems) {
+            OrderFood orderFood = new OrderFood();
+            orderFood.setOrder(order);
+            orderFood.setFood(cartItem.getFood());
+            orderFoods.add(orderFood);
+        }
+        order.setFoods(orderFoods);
+        orderService.add(order);
+        cartService.clearCart(loggedInUserMBean.getModel().getId());
+        return "history?faces-redirect=true";
+    }
+
     private LocalDateTime time() {
         LocalDateTime now = LocalDateTime.now();
         return now;
@@ -136,21 +164,6 @@ public class OrderMBean implements Serializable {
         this.courierList = courierList;
     }
 
-    public Long getModifierUserID() {
-        return modifierUserID;
-    }
-
-    public void setModifierUserID(Long modifierUserID) {
-        this.modifierUserID = modifierUserID;
-    }
-
-    public Long getCreatorUserID() {
-        return creatorUserID;
-    }
-
-    public void setCreatorUserID(Long creatorUserID) {
-        this.creatorUserID = creatorUserID;
-    }
 
     public Long getCourierID() {
         return courierID;
@@ -175,27 +188,18 @@ public class OrderMBean implements Serializable {
     public void setSelectedOrder(Order selectedOrder) {
         this.selectedOrder = selectedOrder;
 
-        if (selectedOrder != null) {
-            if (selectedOrder.getCreatorUser() != null) {
-                creatorUserID = selectedOrder.getCreatorUser().getId();
-            } else {
-                creatorUserID = null;
-            }
-
-            if (selectedOrder.getModifiedUser() != null) {
-                modifierUserID = selectedOrder.getModifiedUser().getId();
-            } else {
-                modifierUserID = null;
-            }
-
-            if (selectedOrder.getCourier() != null) {
-                courierID = selectedOrder.getCreatorUser().getId();
-            } else {
-                courierID = null;
-            }
+        if (selectedOrder.getCourier() != null) {
+            courierID = selectedOrder.getCreatorUser().getId();
         } else {
-            creatorUserID = null;
-            modifierUserID = null;
+            courierID = null;
         }
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

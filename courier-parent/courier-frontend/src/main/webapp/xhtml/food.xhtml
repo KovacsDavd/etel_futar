@@ -74,7 +74,7 @@
 
             <p:column>
                 <f:facet name="header">Created User</f:facet>
-                <h:outputText rendered="#{food.creatorUser!=null}" value="#{food.creatorUser.userName}"/>
+                <h:outputText value="#{food.creatorUser.userName}"/>
             </p:column>
 
             <p:column>
@@ -95,21 +95,8 @@
             <p:inputText id="description" value="#{foodMBean.selectedFood.description}" required="true"/>
 
             <p:outputLabel for="price" value="Price"/>
-            <p:inputText id="price" value="#{foodMBean.selectedFood.price}" required="true"/>
-
-            <p:outputLabel for="creatorUser" value="Creator User"/>
-            <p:selectOneMenu id="creatorUser" value="#{foodMBean.creatorUserID}" required="true">
-                <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{foodMBean.userList}" var="creator" itemLabel="#{creator.userName}"
-                               itemValue="#{creator.id}"/>
-            </p:selectOneMenu>
-
-            <p:outputLabel for="modifierUser" value="Modifier User"/>
-            <p:selectOneMenu id="modifierUser" value="#{foodMBean.modifierUserID}">
-                <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{foodMBean.userList}" var="modifier" itemLabel="#{modifier.userName}"
-                               itemValue="#{modifier.id}"/>
-            </p:selectOneMenu>
+            <p:inputNumber id="price" value="#{foodMBean.selectedFood.price}" required="true"
+                           decimalPlaces="0"/>
 
             <p:commandButton value="Close" oncomplete="PF('foodDialog').hide()"/>
             <p:commandButton value="Save" actionListener="#{foodMBean.save}" update=":mainForm"/>

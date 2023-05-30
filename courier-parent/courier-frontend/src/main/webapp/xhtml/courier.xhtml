@@ -74,7 +74,7 @@
 
             <p:column>
                 <f:facet name="header">Created User</f:facet>
-                <h:outputText rendered="#{courier.creatorUser!=null}" value="#{courier.creatorUser.userName}"/>
+                <h:outputText value="#{courier.creatorUser.userName}"/>
             </p:column>
 
             <p:column>
@@ -96,20 +96,6 @@
 
             <p:outputLabel for="phoneNumber" value="Phone Number"/>
             <p:inputText id="phoneNumber" value="#{courierMBean.selectedCourier.phoneNumber}" required="true"/>
-
-            <p:outputLabel for="creatorUser" value="Creator User"/>
-            <p:selectOneMenu id="creatorUser" value="#{courierMBean.creatorUserID}" required="true">
-                <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{courierMBean.userList}" var="creator" itemLabel="#{creator.userName}"
-                               itemValue="#{creator.id}"/>
-            </p:selectOneMenu>
-
-            <p:outputLabel for="modifierUser" value="Modifier User"/>
-            <p:selectOneMenu id="modifierUser" value="#{courierMBean.modifierUserID}">
-                <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{courierMBean.userList}" var="modifier" itemLabel="#{modifier.userName}"
-                               itemValue="#{modifier.id}"/>
-            </p:selectOneMenu>
 
             <p:commandButton value="Close" oncomplete="PF('courierDialog').hide()"/>
             <p:commandButton value="Save" actionListener="#{courierMBean.save}" update=":mainForm"/>

@@ -135,21 +135,6 @@
             <p:outputLabel for="publicSpaceNature" value="Public Space Nature"/>
             <p:inputText id="publicSpaceNature" value="#{orderMBean.selectedOrder.publicSpaceNature}" required="true"/>
 
-
-            <p:outputLabel for="creatorUser" value="Creator User"/>
-            <p:selectOneMenu id="creatorUser" value="#{orderMBean.creatorUserID}" required="true">
-                <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{orderMBean.userList}" var="creator" itemLabel="#{creator.userName}"
-                               itemValue="#{creator.id}"/>
-            </p:selectOneMenu>
-
-            <p:outputLabel for="modifierUser" value="Modifier User"/>
-            <p:selectOneMenu id="modifierUser" value="#{orderMBean.modifierUserID}">
-                <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon!"/>
-                <f:selectItems value="#{orderMBean.userList}" var="modifier" itemLabel="#{modifier.userName}"
-                               itemValue="#{modifier.id}"/>
-            </p:selectOneMenu>
-
             <p:commandButton value="Close" oncomplete="PF('orderDialog').hide()"/>
             <p:commandButton value="Save" actionListener="#{orderMBean.save}" update=":mainForm"/>
         </p:panelGrid>

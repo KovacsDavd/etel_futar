@@ -26,11 +26,12 @@ public class CourierMBean implements Serializable {
     @Inject
     private UserService userService;
 
+    @Inject
+    private LoggedInUserMBean loggedInUserMBean;
+
     List<User> userList;
     List<Courier> list = new ArrayList<>();
     private Courier selectedCourier = new Courier();
-    private Long modifierUserID;
-    private Long creatorUserID;
 
     private void load() {
         list = courierService.getAll();
@@ -51,20 +52,12 @@ public class CourierMBean implements Serializable {
 
     public void initNewCourier() {
         this.selectedCourier = new Courier();
-        this.creatorUserID = null;
-        this.modifierUserID = null;
     }
 
     public void save() {
-        if (modifierUserID != null) {
-            selectedCourier.setModifiedUser(userService.findById(modifierUserID));
-        } else {
-            selectedCourier.setModifiedUser(null);
-        }
-
         if (selectedCourier.getId() == null) {
             selectedCourier.setCreatedDate(time());
-            selectedCourier.setCreatorUser(userService.findById(creatorUserID));
+            selectedCourier.setCreatorUser(userService.findById(loggedInUserMBean.getModel().getId()));
             if (selectedCourier.isFirstNameSameLastName(selectedCourier.getLastName(), selectedCourier.getFirstName())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Last illetve Firstname nem lehet azonos"));
             } else {
@@ -75,6 +68,7 @@ public class CourierMBean implements Serializable {
             }
         } else {
             selectedCourier.setModifiedDate(time());
+            selectedCourier.setModifiedUser(userService.findById(loggedInUserMBean.getModel().getId()));
             courierService.update(selectedCourier);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successful save"));
             load();
@@ -110,23 +104,6 @@ public class CourierMBean implements Serializable {
 
     public void setSelectedCourier(Courier selectedCourier) {
         this.selectedCourier = selectedCourier;
-
-        if (selectedCourier != null) {
-            if (selectedCourier.getCreatorUser() != null) {
-                creatorUserID = selectedCourier.getCreatorUser().getId();
-            } else {
-                creatorUserID = null;
-            }
-
-            if (selectedCourier.getModifiedUser() != null) {
-                modifierUserID = selectedCourier.getModifiedUser().getId();
-            } else {
-                modifierUserID = null;
-            }
-        } else {
-            creatorUserID = null;
-            modifierUserID = null;
-        }
     }
 
     public UserService getUserService() {
@@ -143,21 +120,5 @@ public class CourierMBean implements Serializable {
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
-    }
-
-    public Long getModifierUserID() {
-        return modifierUserID;
-    }
-
-    public void setModifierUserID(Long modifierUserID) {
-        this.modifierUserID = modifierUserID;
-    }
-
-    public Long getCreatorUserID() {
-        return creatorUserID;
-    }
-
-    public void setCreatorUserID(Long creatorUserID) {
-        this.creatorUserID = creatorUserID;
     }
 }

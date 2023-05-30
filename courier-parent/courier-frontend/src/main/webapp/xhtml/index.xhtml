@@ -20,7 +20,7 @@
     <p:menubar>
         <f:facet name="options">
             <p:button value="Cart" outcome="/xhtml/cart.xhtml" rendered="#{loggedInUserMBean.loggedIn}" styleClass="ui-button-info" style="margin-right: 10px"/>
-            <p:button value="Order History" outcome="/xhtml/cart.xhtml" rendered="#{loggedInUserMBean.loggedIn}" styleClass="ui-button-info" style="margin-right: 10px"/>
+            <p:button value="Order History" outcome="/xhtml/history.xhtml" rendered="#{loggedInUserMBean.loggedIn}" styleClass="ui-button-info" style="margin-right: 10px"/>
 
             <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
                              rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
@@ -28,7 +28,7 @@
         </f:facet>
     </p:menubar>
 
-    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
+    <h:panelGroup rendered="#{loggedInUserMBean.loggedIn}">
         <p:dataTable id="table" value="#{indexMBean.list}" var="index" rows="10"
                      paginator="true" selectionMode="single" rowKey="#{index.id}"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -53,7 +53,7 @@
             </p:column>
 
             <p:column>
-                <p:commandButton value="Add to Cart" actionListener="#{indexMBean.add(index)}"
+                <p:commandButton value="Add to Cart" rendered="#{!loggedInUserMBean.admin}" actionListener="#{indexMBean.add(index)}"
                                  update=":mainForm:growl" styleClass="ui-button-info"/>
             </p:column>
         </p:dataTable>

@@ -20,8 +20,6 @@
             <f:facet name="options">
                 <p:button value="Home Page" outcome="/xhtml/index.xhtml" rendered="#{loggedInUserMBean.loggedIn}"
                           styleClass="ui-button-info" style="margin-right: 10px"/>
-                <p:button value="Checkout Now" outcome="/xhtml/checkout.xhtml" rendered="#{loggedInUserMBean.loggedIn and !cartMBean.isEmptyList()}"
-                          styleClass="ui-button-info" style="margin-right: 10px"/>
 
                 <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
                                  rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
@@ -30,31 +28,21 @@
         </p:menubar>
 
         <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
-            <p:dataTable id="table" value="#{cartMBean.list}" var="food" rows="10"
+            <p:dataTable id="table" value="#{orderMBean.userOrderList}" var="food" rows="10"
                          paginator="true" selectionMode="single" rowKey="#{food.id}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                          rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-                <p:column filterBy="#{food.food.name}" filterMatchMode="contains" sortBy="#{food.food.name}">
-                    <f:facet name="header">Name</f:facet>
-                    <h:outputText value="#{food.food.name}"/>
+                <p:column filterBy="#{food.createdDate}" filterMatchMode="contains" sortBy="#{food.createdDate}">
+                    <f:facet name="header">Ordered Date</f:facet>
+                    <h:outputText value="#{food.createdDate}"/>
                 </p:column>
 
-                <p:column filterBy="#{food.food.description}" filterMatchMode="contains" sortBy="#{food.food.description}">
-                    <f:facet name="header">Description</f:facet>
-                    <h:outputText value="#{food.food.description}"/>
-                </p:column>
-
-                <p:column filterBy="#{food.food.price}" filterMatchMode="contains" sortBy="#{food.food.price}">
-                    <f:facet name="header">Price</f:facet>
-                    <h:outputText value="#{food.food.price}">
-                        <f:convertNumber type="currency" currencySymbol=" Ft" maxFractionDigits="0"/>
-                    </h:outputText>
-                </p:column>
-
-                <p:column>
-                    <p:commandButton value="Remove" actionListener="#{cartMBean.removeFromCart(food)}"
-                                     update=":mainForm :mainForm:growl mainForm:menuBar" styleClass="ui-button-info"/>
+                <p:column filterBy="#{food.foods}" filterMatchMode="contains" sortBy="#{food.foods}">
+                    <f:facet name="header">Foods</f:facet>
+                    <ui:repeat value="#{food.foods}" var="food2">
+                        <h:outputText value="#{food2.food.name} (#{food2.food.price} Ft)  "/>
+                    </ui:repeat>
                 </p:column>
             </p:dataTable>
         </h:panelGroup>

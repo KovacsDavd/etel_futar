@@ -29,12 +29,12 @@ public class FoodMBean implements Serializable {
     private FoodService service;
     @Inject
     private UserService userService;
+    @Inject
+    private LoggedInUserMBean loggedInUserMBean;
 
     List<Food> list = new ArrayList<>();
     List<User> userList;
     private Food selectedFood = new Food();
-    private Long modifierUserID;
-    private Long creatorUserID;
 
     private void load() {
         list = service.getAll();
@@ -55,23 +55,15 @@ public class FoodMBean implements Serializable {
 
     public void initNewFood() {
         this.selectedFood = new Food();
-        this.creatorUserID = null;
-        this.modifierUserID = null;
     }
 
     public void save() {
-        if (modifierUserID != null) {
-            selectedFood.setModifiedUser(userService.findById(modifierUserID));
-        } else {
-            selectedFood.setModifiedUser(null);
-        }
-
         if (selectedFood.getId() == null) {
             selectedFood.setCreatedDate(time());
-            selectedFood.setCreatorUser(userService.findById(creatorUserID));
+            selectedFood.setCreatorUser(userService.findById(loggedInUserMBean.getModel().getId()));
             service.add(selectedFood);
         } else {
-            selectedFood.setCreatorUser(userService.findById(creatorUserID));
+            selectedFood.setModifiedUser(userService.findById(loggedInUserMBean.getModel().getId()));
             selectedFood.setModifiedDate(time());
             service.update(selectedFood);
         }
@@ -107,23 +99,6 @@ public class FoodMBean implements Serializable {
 
     public void setSelectedFood(Food selectedFood) {
         this.selectedFood = selectedFood;
-
-        if (selectedFood != null) {
-            if (selectedFood.getCreatorUser() != null) {
-                creatorUserID = selectedFood.getCreatorUser().getId();
-            } else {
-                creatorUserID = null;
-            }
-
-            if (selectedFood.getModifiedUser() != null) {
-                modifierUserID = selectedFood.getModifiedUser().getId();
-            } else {
-                modifierUserID = null;
-            }
-        } else {
-            creatorUserID = null;
-            modifierUserID = null;
-        }
     }
 
     public UserService getUserService() {
@@ -140,21 +115,5 @@ public class FoodMBean implements Serializable {
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
-    }
-
-    public Long getModifierUserID() {
-        return modifierUserID;
-    }
-
-    public void setModifierUserID(Long modifierUserID) {
-        this.modifierUserID = modifierUserID;
-    }
-
-    public Long getCreatorUserID() {
-        return creatorUserID;
-    }
-
-    public void setCreatorUserID(Long creatorUserID) {
-        this.creatorUserID = creatorUserID;
     }
 }

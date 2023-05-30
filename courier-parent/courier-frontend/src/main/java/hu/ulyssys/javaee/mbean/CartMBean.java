@@ -28,7 +28,9 @@ public class CartMBean implements Serializable {
     private Food selectedFood;
 
     private void load() {
-        list = cartService.getCartItems(loggedInUserMBean.getModel().getId());
+        if (cartService.getCartItems(loggedInUserMBean.getModel().getId()) != null) {
+            list = cartService.getCartItems(loggedInUserMBean.getModel().getId());
+        }
     }
 
     @PostConstruct
@@ -39,7 +41,24 @@ public class CartMBean implements Serializable {
 
     public void removeFromCart(CartItem food) {
         cartService.removeFromCart(loggedInUserMBean.getModel().getId(), food);
+        list.remove(food);
+        load();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres eltávolítás", ""));
+    }
+
+    public int TotalPrice() {
+        Long userId = loggedInUserMBean.getModel().getId();
+        List<CartItem> list1 = cartService.getCartItems(userId);
+        int sum = 0;
+        for (CartItem cartItem : list1) {
+            sum += cartItem.getFood().getPrice();
+        }
+        return sum;
+    }
+
+    public boolean isEmptyList() {
+        Long userId = loggedInUserMBean.getModel().getId();
+        return cartService.getCartItems(userId).isEmpty();
     }
 
     public void clearCart() {

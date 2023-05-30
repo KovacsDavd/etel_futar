@@ -42,6 +42,11 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
     @Override
+    public Cart getCart(Long userId) {
+        Cart cart = cartDAO.findByUserId(userId);
+        return cart;
+    }
+    @Override
     public void addToCart(Long userId, Food food) {
         Cart cart = getOrCreateCart(userId);
         CartItem newCartItem = new CartItem();

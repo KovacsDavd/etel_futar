@@ -7,6 +7,7 @@ import hu.ulyssys.javaee.entity.Food;
 import java.util.List;
 
 public interface CartService {
+    Cart getCart(Long userId);
     void addToCart(Long userId, Food food);
     void removeFromCart(Long userId, CartItem food);
     void clearCart(Long userId);
