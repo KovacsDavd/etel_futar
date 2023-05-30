@@ -1,5 +1,5 @@
 ###
-GET http://localhost:8080/api/food/4
+GET http://localhost:8080/api/food/11
 
 ###
 
@@ -14,10 +14,10 @@ Content-Type: application/json
 {
   "model": {
     "createdDate": "2023-05-24T15:45:50.371043",
-    "creatorID": 1,
+    "creatorID": 22,
     "description": "leiras",
     "modifiedDate": "2023-05-24T15:45:50.371043",
-    "modifiedID": 1,
+    "modifiedID": 22,
     "name": "name",
     "price": 1232
   }
@@ -31,12 +31,12 @@ Content-Type: application/json
 
 {
   "model": {
-    "id": 3,
+    "id": 11,
     "createdDate": "2023-05-24T15:45:50.371043",
-    "creatorID": 1,
+    "creatorID": 22,
     "description": "testleiras2",
     "modifiedDate": "2023-05-25T15:45:50.371043",
-    "modifiedID": 1,
+    "modifiedID": 22,
     "name": "name2",
     "price": 100
   }

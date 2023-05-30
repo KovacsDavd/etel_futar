@@ -5,12 +5,6 @@ import hu.ulyssys.javaee.entity.CartItem;
 
 import java.util.List;
 
-public interface CartDAO {
-    void delete(Long id);
-
-    void add(Cart entity);
-
+public interface CartDAO extends CoreDAO<Cart>{
     Cart findByUserId(Long id);
-
-    void update(Cart entity);
 }

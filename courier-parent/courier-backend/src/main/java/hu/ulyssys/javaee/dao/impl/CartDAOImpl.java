@@ -12,33 +12,24 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class CartDAOImpl implements CartDAO {
+public class CartDAOImpl extends CoreDAOImpl<Cart> implements CartDAO {
     @PersistenceContext(name = "CourierPersistence")
     EntityManager entityManager;
 
 
     @Override
-    public void delete(Long id) {
-        //entityManager.remove(entityManager.find(Cart.class,id));
-        //entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
+    public void remove(Long id) {
         Cart cart = findByUserId(id);
-        if (cart != null) {
-            List<CartItem> cartItems = cart.getItems();
-            for (CartItem cartItem : cartItems) {
-                entityManager.remove(cartItem);
-            }
-            entityManager.remove(cart);
-        }
+        entityManager.remove(cart);
     }
 
     @Override
-    public void add(Cart entity) {
-        entityManager.persist(entity);
+    protected Class<Cart> getManagedClass() {
+        return Cart.class;
     }
 
     @Override
     public Cart findByUserId(Long id) {
-        //return entityManager.find(Cart.class, id);
         TypedQuery<Cart> query = entityManager.createQuery("SELECT c FROM Cart c WHERE c.user.id = :userId", Cart.class);
         query.setParameter("userId", id);
         try {
@@ -46,10 +37,5 @@ public class CartDAOImpl implements CartDAO {
         } catch (NoResultException e) {
             return null;
         }
-    }
-
-    @Override
-    public void update(Cart entity) {
-        entityManager.merge(entity);
     }
 }

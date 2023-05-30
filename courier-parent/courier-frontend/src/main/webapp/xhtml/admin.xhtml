@@ -132,8 +132,12 @@
             <p:outputLabel for="publicSpace" value="Public Space"/>
             <p:inputText id="publicSpace" value="#{orderMBean.selectedOrder.publicSpace}" required="true"/>
 
-            <p:outputLabel for="publicSpaceNature" value="Public Space Nature"/>
-            <p:inputText id="publicSpaceNature" value="#{orderMBean.selectedOrder.publicSpaceNature}" required="true"/>
+            <h:outputLabel for="publicSpaceNature" value="Public Space Nature:"/>
+            <p:selectOneMenu id="publicSpaceNature" value="#{orderMBean.selectedOrder.publicSpaceNature}" required="true">
+                <f:selectItem itemLabel="Select" itemValue="" />
+                <f:selectItem itemLabel="Street" itemValue="Street" />
+                <f:selectItem itemLabel="Square" itemValue="Square" />
+            </p:selectOneMenu>
 
             <p:commandButton value="Close" oncomplete="PF('orderDialog').hide()"/>
             <p:commandButton value="Save" actionListener="#{orderMBean.save}" update=":mainForm"/>

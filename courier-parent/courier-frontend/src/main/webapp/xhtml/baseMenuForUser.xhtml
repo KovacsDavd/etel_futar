@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en" xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:include src="loginCheck.xhtml"/>
+<h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
+    <p:menubar id="menuBar">
+        <f:facet name="options">
+            <p:button value="Home Page" outcome="/xhtml/index.xhtml" rendered="#{view.viewId ne '/xhtml/index.xhtml'}"
+                      styleClass="ui-button-info" style="margin-right: 10px"/>
+
+            <p:button value="Cart" outcome="/xhtml/cart.xhtml" rendered="#{view.viewId eq '/xhtml/index.xhtml'}"
+                      styleClass="ui-button-info" style="margin-right: 10px"/>
+
+            <p:button value="Order History" outcome="/xhtml/history.xhtml" rendered="#{view.viewId eq '/xhtml/index.xhtml'}"
+                      styleClass="ui-button-info" style="margin-right: 10px"/>
+
+            <p:button value="Checkout Now" outcome="/xhtml/checkout.xhtml"
+                      rendered="#{!cartMBean.emptyList and view.viewId eq '/xhtml/cart.xhtml'}"
+                      styleClass="ui-button-info" style="margin-right: 10px"/>
+
+            <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
+                             value="Logout" icon="pi pi-fw pi-sign-out"
+                             styleClass="ui-button-info" update="@form"/>
+        </f:facet>
+    </p:menubar>
+</h:panelGroup>
+
+<h:panelGroup rendered="#{loggedInUserMBean.loggedIn and loggedInUserMBean.admin}">
+    <p:menubar id="menuBar2">
+        <f:facet name="options">
+            <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
+                             value="Logout" icon="pi pi-fw pi-sign-out"
+                             styleClass="ui-button-info" update="@form"/>
+        </f:facet>
+    </p:menubar>
+</h:panelGroup>
+</html>

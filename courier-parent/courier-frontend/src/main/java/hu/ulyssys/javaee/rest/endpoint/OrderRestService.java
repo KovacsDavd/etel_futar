@@ -17,9 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/order")
-public class OrderRestService {
+public class OrderRestService extends CoreRestService<Order, OrderModel> {
     @Inject
     private OrderService orderService;
+
     @Inject
     private UserService userService;
     @Inject
@@ -28,32 +29,7 @@ public class OrderRestService {
     @Inject
     private FoodService foodService;
 
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findById(@PathParam("id") Long id) {
-
-        Order order = orderService.findById(id);
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(new RestFindByIdResponse<>(entityToDTO(order))).build();
-    }
-
-
-    @GET
-    @Path("")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll() {
-
-        List<OrderModel> list = new ArrayList<>();
-        orderService.getAll().forEach(order -> {
-            list.add(entityToDTO(order));
-        });
-
-        return Response.ok(new RestFindAllResponse<>(list)).build();
-    }
-
+    @Override
     @POST
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +45,7 @@ public class OrderRestService {
 
     }
 
+    @Override
     @PUT
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,17 +65,6 @@ public class OrderRestService {
         return Response.ok(new RestFindByIdResponse<>(entityToDTO(order))).build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response remove(@PathParam("id") Long id) {
-        Order order = orderService.findById(id);
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        orderService.remove(order);
-        return Response.ok().build();
-    }
 
     private Order dtoToEntity(Order order, OrderModel orderModel, boolean createOrderFoods) {
         order.setCreatorUser(userService.findById(orderModel.getCreatorID()));
@@ -118,7 +84,7 @@ public class OrderRestService {
         order.setPublicSpace(orderModel.getPublicSpace());
         order.setPublicSpaceNature(orderModel.getPublicSpaceNature());
         if (orderModel.getFoodList() != null) {
-            if (createOrderFoods){ //POST
+            if (createOrderFoods) { //POST
                 List<OrderFood> orderFoods = new ArrayList<>();
                 for (OrderFoodModel orderFoodModel : orderModel.getFoodList()) {
                     OrderFood orderFood = new OrderFood();
@@ -136,7 +102,8 @@ public class OrderRestService {
         return order;
     }
 
-    private OrderModel entityToDTO(Order order) {
+    @Override
+    protected OrderModel entityToDTO(Order order) {
         OrderModel model = new OrderModel();
         model.setId(order.getId());
         model.setCreatedDate(order.getCreatedDate());
@@ -166,5 +133,15 @@ public class OrderRestService {
             model.setFoodList(foodList);
         }
         return model;
+    }
+
+    @Override
+    protected Order dtoToEntity(Order entity, OrderModel model) {
+        return null;
+    }
+
+    @Override
+    protected Class<Order> getManagedClass() {
+        return Order.class;
     }
 }

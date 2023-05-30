@@ -41,6 +41,7 @@ public class OrderMBean implements Serializable {
     private Order selectedOrder = new Order();
     private Order order = new Order();
 
+
     private void load() {
         list = orderService.getAll();
         userList = userService.getAll();

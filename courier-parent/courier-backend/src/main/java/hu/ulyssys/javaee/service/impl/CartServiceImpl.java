@@ -62,7 +62,7 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = findCartItemByFood(cart, food);
         if (cartItem != null) {
             cart.getItems().remove(cartItem);
-            cartItemDAO.remove(cartItem);
+            cartItemDAO.remove(cartItem.getId());
             cartDAO.update(cart);
         }
     }
@@ -81,7 +81,7 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     public void deleteCart(Long id) {
-        cartDAO.delete(id);
+        cartDAO.remove(id);
     }
 
     @Override

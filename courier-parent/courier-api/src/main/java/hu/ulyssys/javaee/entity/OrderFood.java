@@ -4,10 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "order_food")
-public class OrderFood {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class OrderFood extends CoreEntity{
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -15,14 +12,6 @@ public class OrderFood {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private Food food;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Order getOrder() {
         return order;

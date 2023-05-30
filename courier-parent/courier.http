@@ -1,5 +1,5 @@
 ###
-GET http://localhost:8080/api/courier/0
+GET http://localhost:8080/api/courier/15
 
 ###
 
@@ -14,17 +14,17 @@ Content-Type: application/json
 {
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
-    "creatorID": 1,
+    "creatorID": 22,
     "firstName": "proba4",
-    "lastName": "proba4",
+    "lastName": "proba",
     "modifiedDate": "2023-05-24T14:45:50.371043",
-    "modifiedID": 1,
+    "modifiedID": 22,
     "phoneNumber": "+36706640672"
   }
 }
 ###
 
-DELETE http://localhost:8080/api/courier/3
+DELETE http://localhost:8080/api/courier/15
 ###
 PUT http://localhost:8080/api/courier/
 Content-Type: application/json
@@ -32,12 +32,12 @@ Content-Type: application/json
 {
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
-    "creatorID": 1,
+    "creatorID": 22,
     "firstName": "first_nameproba",
-    "id": 4,
+    "id": 308,
     "lastName": "last_name",
     "modifiedDate": "2023-05-24T14:45:50.371043",
-    "modifiedID": 1,
+    "modifiedID": 22,
     "phoneNumber": "+36706640672"
   }
 }

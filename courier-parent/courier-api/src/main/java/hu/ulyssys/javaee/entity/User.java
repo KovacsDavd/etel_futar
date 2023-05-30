@@ -15,6 +15,16 @@ public class User extends CoreEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole role;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public UserRole getRole() {
         return role;

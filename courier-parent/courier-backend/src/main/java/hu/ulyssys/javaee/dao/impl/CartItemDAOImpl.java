@@ -9,22 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class CartItemDAOImpl implements CartItemDAO {
+public class CartItemDAOImpl extends CoreDAOImpl<CartItem> implements CartItemDAO {
     @PersistenceContext(name = "CourierPersistence")
     EntityManager entityManager;
 
-    @Override
-    public void add(CartItem cartItem) {
-        entityManager.persist(cartItem);
-    }
 
     @Override
-    public void update(CartItem cartItem) {
-        entityManager.merge(cartItem);
-    }
-
-    @Override
-    public void remove(CartItem cartItem) {
-        entityManager.remove(entityManager.contains(cartItem) ? cartItem : entityManager.merge(cartItem));
+    protected Class<CartItem> getManagedClass() {
+        return CartItem.class;
     }
 }

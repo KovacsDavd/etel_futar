@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
     <title>Checkout Page</title>
@@ -27,52 +27,58 @@
 </h:head>
 
 <h:body>
-    <h:form>
-        <div class="main-container">
-            <!-- User data form -->
-            <div class="data-form">
-                <h3>Your details</h3>
-                <h:form>
+    <h:form id="mainForm">
+        <p:growl id="growl" showDetail="true" globalOnly="true"/>
+        <ui:include src="loginCheck.xhtml"/>
+        <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin and !cartMBean.emptyList}">
+            <div class="main-container">
+                <div class="data-form">
+                    <h3>Your details</h3>
                     <p:panelGrid columns="2">
                         <h:outputLabel for="settlement" value="Settlement:"/>
-                        <p:inputText id="settlement" value="#{orderMBean.order.settlement}" required="true"/>
+                        <p:inputText id="settlement" value="#{orderMBean.order.settlement}" required="true" requiredMessage="Muszáj kitöltened"/>
 
                         <h:outputLabel for="publicSpace" value="Public Space:"/>
                         <p:inputText id="publicSpace" value="#{orderMBean.order.publicSpace}" required="true"/>
 
                         <h:outputLabel for="publicSpaceNature" value="Public Space Nature:"/>
-                        <p:inputText id="publicSpaceNature" value="#{orderMBean.order.publicSpaceNature}"
-                                     required="true"/>
+                        <p:selectOneMenu id="publicSpaceNature" value="#{orderMBean.order.publicSpaceNature}" required="true">
+                            <f:selectItem itemLabel="Select" itemValue="" />
+                            <f:selectItem itemLabel="Street" itemValue="Street" />
+                            <f:selectItem itemLabel="Square" itemValue="Square" />
+                        </p:selectOneMenu>
 
                         <h:outputLabel for="houseNumber" value="House Number:"/>
                         <p:inputText id="houseNumber" value="#{orderMBean.order.houseNumber}" required="true"/>
                     </p:panelGrid>
-                </h:form>
-            </div>
+                </div>
 
-            <div class="summary-panel">
-                <h3>Your order</h3>
-                <p:dataTable var="item" value="#{cartMBean.list}">
-                    <p:column headerText="Product">
-                        <h:outputText value="#{item.food.name}"/>
-                    </p:column>
+                <div class="summary-panel">
+                    <h3>Your order</h3>
+                    <p:dataTable var="item" value="#{cartMBean.list}">
+                        <p:column headerText="Product">
+                            <h:outputText value="#{item.food.name}"/>
+                        </p:column>
 
-                    <p:column headerText="Price">
-                        <h:outputText value="#{item.food.price}"/>
-                    </p:column>
-                </p:dataTable>
-                <table style="width:100%;">
-                    <tr>
-                        <td><h2>Total: </h2></td>
-                        <td><h2>#{cartMBean.TotalPrice()} Ft</h2></td>
-                    </tr>
-                </table>
-                <p:commandButton value="Checkout" rendered="#{loggedInUserMBean.loggedIn and !cartMBean.isEmptyList()}"
-                                 action="#{orderMBean.saveFromUser()}"
-                                 ajax="false"/>
+                        <p:column headerText="Price">
+                            <h:outputText value="#{item.food.price}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <table style="width:100%;">
+                        <tr>
+                            <td><h2>Total: </h2></td>
+                            <td><h2>#{cartMBean.TotalPrice()} Ft</h2></td>
+                        </tr>
+                    </table>
+                    <p:commandButton value="Checkout"
+                                     rendered="#{loggedInUserMBean.loggedIn and !cartMBean.isEmptyList()}"
+                                     action="#{orderMBean.saveFromUser()}"
+                                     ajax="false"/>
+                </div>
             </div>
-        </div>
+        </h:panelGroup>
     </h:form>
-</h:body>
 
+    <ui:include src="loginForm.xhtml"/>
+</h:body>
 </html>

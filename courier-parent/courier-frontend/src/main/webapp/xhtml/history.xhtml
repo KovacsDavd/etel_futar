@@ -2,32 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html" xml:lang="en" lang="en" xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-    <title>Cart</title>
+    <title>History</title>
 </h:head>
 <h:body>
     <h:form id="mainForm">
         <p:growl id="growl" showDetail="true" globalOnly="true"/>
-        <h:panelGroup rendered="#{!loggedInUserMBean.loggedIn}">
-            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                <h2 style="text-align: center;">Muszáj bejelentkezned!</h2>
-                <p:commandButton id="loginButton" oncomplete="PF('loginDialog').show()"
-                                 value="Login" icon="pi pi-fw pi-sign-in"
-                                 styleClass="ui-button-info" update="growl"/>
-            </div>
-        </h:panelGroup>
-
-        <p:menubar id="menuBar">
-            <f:facet name="options">
-                <p:button value="Home Page" outcome="/xhtml/index.xhtml" rendered="#{loggedInUserMBean.loggedIn}"
-                          styleClass="ui-button-info" style="margin-right: 10px"/>
-
-                <p:commandButton actionListener="#{loginRequestMBean.doLogout()}"
-                                 rendered="#{loggedInUserMBean.loggedIn}" value="Logout" icon="pi pi-fw pi-sign-out"
-                                 styleClass="ui-button-info" update="@form"/>
-            </f:facet>
-        </p:menubar>
+        <ui:include src="baseMenuForUser.xhtml"/>
 
         <h:panelGroup rendered="#{loggedInUserMBean.loggedIn and !loggedInUserMBean.admin}">
+            <h2 style="text-align: center;">Előző rendeléseid</h2>
             <p:dataTable id="table" value="#{orderMBean.userOrderList}" var="food" rows="10"
                          paginator="true" selectionMode="single" rowKey="#{food.id}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

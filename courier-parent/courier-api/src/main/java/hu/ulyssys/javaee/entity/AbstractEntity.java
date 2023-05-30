@@ -19,6 +19,16 @@ public abstract class AbstractEntity extends CoreEntity {
     @ManyToOne
     @JoinColumn(name = "modified_user_id")
     private User modifiedUser;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public LocalDateTime getModifiedDate() {
         return modifiedDate;

@@ -7,19 +7,9 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class CoreEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
 
     public Long getId() {
         return id;

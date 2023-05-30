@@ -5,10 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "cart")
-public class Cart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Cart extends CoreEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -16,14 +13,6 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart",fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval=true)
     private List<CartItem> items;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;

@@ -6,12 +6,7 @@ import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class OrderModel {
-    private Long id;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private Long creatorID;
-    private Long modifiedID;
+public class OrderModel extends CoreModel{
     private LocalDateTime deliveryDate;
     private Long courierID;
     private List<OrderFoodModel> foodList;
@@ -19,46 +14,6 @@ public class OrderModel {
     private String publicSpace;
     private String publicSpaceNature;
     private String houseNumber;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public Long getCreatorID() {
-        return creatorID;
-    }
-
-    public void setCreatorID(Long creatorID) {
-        this.creatorID = creatorID;
-    }
-
-    public Long getModifiedID() {
-        return modifiedID;
-    }
-
-    public void setModifiedID(Long modifiedID) {
-        this.modifiedID = modifiedID;
-    }
 
     public LocalDateTime getDeliveryDate() {
         return deliveryDate;

@@ -4,11 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cart_item")
-public class CartItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class CartItem extends CoreEntity{
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
@@ -16,14 +12,6 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private Food food;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Cart getCart() {
         return cart;

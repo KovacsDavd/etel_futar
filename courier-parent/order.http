@@ -1,5 +1,5 @@
 ###
-GET http://localhost:8080/api/order/1
+GET http://localhost:8080/api/order/33
 
 ###
 
@@ -14,9 +14,9 @@ Content-Type: application/json
 {
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
-    "creatorID": 1,
+    "creatorID": 22,
     "modifiedDate": "2023-05-24T14:45:50.371043",
-    "modifiedID": 1,
+    "modifiedID": 22,
     "deliveryDate": "2023-05-24T14:45:50.371043",
     "courierID": 1,
     "settlement": "asd",
@@ -25,17 +25,17 @@ Content-Type: application/json
     "houseNumber": 11,
     "foodList": [
       {
-        "foodId": 5
+        "foodId": 10
       },
       {
-        "foodId": 3
+        "foodId": 9
       }
     ]
   }
 }
 ###
 
-DELETE http://localhost:8080/api/order/8
+DELETE http://localhost:8080/api/order/30
 ###
 PUT http://localhost:8080/api/order/
 Content-Type: application/json
@@ -43,12 +43,12 @@ Content-Type: application/json
 {
   "model": {
     "createdDate": "2023-05-24T14:45:50.371043",
-    "creatorID": 1,
-    "id": 13,
+    "creatorID": 22,
+    "id": 31,
     "modifiedDate": "2024-05-24T14:45:50.371043",
-    "modifiedID": 1,
+    "modifiedID": 22,
     "deliveryDate": "2023-05-24T14:45:50.371043",
-    "courierID": 4,
+    "courierID": 15,
     "settlement": "asd",
     "publicSpace": "asd",
     "publicSpaceNature": "asd",
