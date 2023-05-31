@@ -29,13 +29,11 @@ public class CourierMBean implements Serializable {
     @Inject
     private LoggedInUserMBean loggedInUserMBean;
 
-    List<User> userList;
     List<Courier> list = new ArrayList<>();
     private Courier selectedCourier = new Courier();
 
     private void load() {
         list = courierService.getAll();
-        userList = userService.getAll();
     }
 
     @PostConstruct
@@ -77,17 +75,7 @@ public class CourierMBean implements Serializable {
     }
 
     private LocalDateTime time() {
-        LocalDateTime now = LocalDateTime.now();
-        return now;
-    }
-
-
-    public CourierService getCourierService() {
-        return courierService;
-    }
-
-    public void setCourierService(CourierService courierService) {
-        this.courierService = courierService;
+        return LocalDateTime.now();
     }
 
     public List<Courier> getList() {
@@ -104,21 +92,5 @@ public class CourierMBean implements Serializable {
 
     public void setSelectedCourier(Courier selectedCourier) {
         this.selectedCourier = selectedCourier;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
     }
 }

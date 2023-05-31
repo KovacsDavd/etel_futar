@@ -1,23 +1,12 @@
 package hu.ulyssys.javaee.rest.endpoint;
 
 import hu.ulyssys.javaee.entity.Courier;
-import hu.ulyssys.javaee.entity.Order;
 import hu.ulyssys.javaee.rest.model.CourierModel;
-import hu.ulyssys.javaee.rest.request.RestFunctionRequest;
-import hu.ulyssys.javaee.rest.response.RestFindAllResponse;
-import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
-import hu.ulyssys.javaee.service.CourierService;
 import hu.ulyssys.javaee.service.UserService;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 @Path("/courier")
 public class CourierRestService extends CoreRestService<Courier, CourierModel> {

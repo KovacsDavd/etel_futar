@@ -1,12 +1,9 @@
 package hu.ulyssys.javaee.dao.impl;
 
 import hu.ulyssys.javaee.dao.OrderDAO;
-import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.entity.Order;
-import hu.ulyssys.javaee.entity.User;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import java.util.List;
 

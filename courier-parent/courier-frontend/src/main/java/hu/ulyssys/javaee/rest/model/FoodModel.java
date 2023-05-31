@@ -1,6 +1,5 @@
 package hu.ulyssys.javaee.rest.model;
 
-import java.time.LocalDateTime;
 
 public class FoodModel extends CoreModel{
     private String name;

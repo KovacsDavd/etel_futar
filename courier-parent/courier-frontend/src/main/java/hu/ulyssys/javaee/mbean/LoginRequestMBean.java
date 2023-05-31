@@ -14,7 +14,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
 
 @Named
 @RequestScoped
@@ -48,7 +47,6 @@ public class LoginRequestMBean {
             loggedInUserModel.setUsername(user.getUserName());
             loggedInUserModel.setId(user.getId());
             loggedInUserModel.setRole(user.getRole());
-            //loggedInUserModel.setCartItems(new ArrayList<>());
             bean.setModel(loggedInUserModel);
             Long userId = loggedInUserModel.getId();
             cartService.getOrCreateCart(userId);
@@ -64,14 +62,6 @@ public class LoginRequestMBean {
         bean.deleteCart();
         bean.setModel(null);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres Kijelentkezés", ""));
-    }
-
-    public LoggedInUserMBean getBean() {
-        return bean;
-    }
-
-    public void setBean(LoggedInUserMBean bean) {
-        this.bean = bean;
     }
 
     public LoginModel getModel() {

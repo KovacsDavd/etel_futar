@@ -3,18 +3,10 @@ package hu.ulyssys.javaee.rest.endpoint;
 
 import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.rest.model.FoodModel;
-import hu.ulyssys.javaee.rest.request.RestFunctionRequest;
-import hu.ulyssys.javaee.rest.response.RestFindAllResponse;
-import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
-import hu.ulyssys.javaee.service.FoodService;
 import hu.ulyssys.javaee.service.UserService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 @Path("/food")
 public class FoodRestService extends CoreRestService<Food, FoodModel> {

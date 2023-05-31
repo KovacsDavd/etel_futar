@@ -5,7 +5,6 @@ import hu.ulyssys.javaee.entity.OrderFood;
 import hu.ulyssys.javaee.rest.model.OrderFoodModel;
 import hu.ulyssys.javaee.rest.model.OrderModel;
 import hu.ulyssys.javaee.rest.request.RestFunctionRequest;
-import hu.ulyssys.javaee.rest.response.RestFindAllResponse;
 import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
 import hu.ulyssys.javaee.service.*;
 

@@ -6,7 +6,6 @@ import hu.ulyssys.javaee.rest.request.RestFunctionRequest;
 import hu.ulyssys.javaee.rest.response.RestFindAllResponse;
 import hu.ulyssys.javaee.rest.response.RestFindByIdResponse;
 import hu.ulyssys.javaee.service.CoreService;
-import hu.ulyssys.javaee.service.UserService;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -38,9 +37,7 @@ public abstract class CoreRestService<T extends CoreEntity, M extends CoreModel>
     public Response findAll() {
 
         List<M> list = new ArrayList<>();
-        coreService.getAll().forEach(entity -> {
-            list.add(entityToDTO(entity));
-        });
+        coreService.getAll().forEach(entity -> list.add(entityToDTO(entity)));
 
         return Response.ok(new RestFindAllResponse<>(list)).build();
     }
@@ -53,12 +50,10 @@ public abstract class CoreRestService<T extends CoreEntity, M extends CoreModel>
         if (request.getModel() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        T entity = null;
+        T entity;
         try {
             entity = dtoToEntity(getManagedClass().newInstance(), request.getModel());
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
         coreService.add(entity);

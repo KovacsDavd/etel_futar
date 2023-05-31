@@ -1,8 +1,5 @@
 package hu.ulyssys.javaee.rest.model;
 
-import hu.ulyssys.javaee.entity.Food;
-
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 

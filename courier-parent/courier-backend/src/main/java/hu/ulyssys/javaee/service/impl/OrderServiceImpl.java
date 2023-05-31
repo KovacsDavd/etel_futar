@@ -1,7 +1,6 @@
 package hu.ulyssys.javaee.service.impl;
 
 import hu.ulyssys.javaee.dao.OrderDAO;
-import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.entity.Order;
 import hu.ulyssys.javaee.service.OrderService;
 

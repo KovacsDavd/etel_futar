@@ -1,9 +1,7 @@
 package hu.ulyssys.javaee.mbean;
 
 import hu.ulyssys.javaee.entity.CartItem;
-import hu.ulyssys.javaee.entity.Food;
 import hu.ulyssys.javaee.service.CartService;
-import hu.ulyssys.javaee.service.FoodService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -12,7 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -24,8 +21,6 @@ public class CartMBean implements Serializable {
     @Inject
     private CartService cartService;
     List<CartItem> list;
-
-    private Food selectedFood;
 
     private void load() {
         if (cartService.getCartItems(loggedInUserMBean.getModel().getId()) != null) {
@@ -61,18 +56,6 @@ public class CartMBean implements Serializable {
         return cartService.getCartItems(userId).isEmpty();
     }
 
-    public void clearCart() {
-        cartService.clearCart(loggedInUserMBean.getModel().getId());
-    }
-
-    public Food getSelectedFood() {
-        return selectedFood;
-    }
-
-    public void setSelectedFood(Food selectedFood) {
-        this.selectedFood = selectedFood;
-    }
-
     public LoggedInUserMBean getLoggedInUserMBean() {
         return loggedInUserMBean;
     }
@@ -80,15 +63,6 @@ public class CartMBean implements Serializable {
     public void setLoggedInUserMBean(LoggedInUserMBean loggedInUserMBean) {
         this.loggedInUserMBean = loggedInUserMBean;
     }
-
-    public CartService getCartService() {
-        return cartService;
-    }
-
-    public void setCartService(CartService cartService) {
-        this.cartService = cartService;
-    }
-
 
     public List<CartItem> getList() {
         Long userId = loggedInUserMBean.getModel().getId();

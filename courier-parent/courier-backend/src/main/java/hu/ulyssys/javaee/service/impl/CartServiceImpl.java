@@ -2,7 +2,6 @@ package hu.ulyssys.javaee.service.impl;
 
 import hu.ulyssys.javaee.dao.CartDAO;
 import hu.ulyssys.javaee.dao.CartItemDAO;
-import hu.ulyssys.javaee.dao.CoreDAO;
 import hu.ulyssys.javaee.entity.Cart;
 import hu.ulyssys.javaee.entity.CartItem;
 import hu.ulyssys.javaee.entity.Food;
@@ -43,8 +42,7 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     public Cart getCart(Long userId) {
-        Cart cart = cartDAO.findByUserId(userId);
-        return cart;
+        return cartDAO.findByUserId(userId);
     }
     @Override
     public void addToCart(Long userId, Food food) {
@@ -88,7 +86,7 @@ public class CartServiceImpl implements CartService {
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public CartItem findCartItemByFood(Cart cart, CartItem food) {
         for (CartItem cartItem : cart.getItems()) {
-            if (cartItem.getFood().getId()==food.getFood().getId()) {
+            if (cartItem.getFood().getId().equals(food.getFood().getId())) {
                 return cartItem;
             }
         }

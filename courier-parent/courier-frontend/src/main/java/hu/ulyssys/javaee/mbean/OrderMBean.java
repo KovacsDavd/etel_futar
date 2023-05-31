@@ -25,8 +25,6 @@ public class OrderMBean implements Serializable {
     @Inject
     private CourierService courierService;
     @Inject
-    private FoodService foodService;
-    @Inject
     private CartService cartService;
 
     @Inject
@@ -121,40 +119,7 @@ public class OrderMBean implements Serializable {
     }
 
     private LocalDateTime time() {
-        LocalDateTime now = LocalDateTime.now();
-        return now;
-    }
-
-    public OrderService getOrderService() {
-        return orderService;
-    }
-
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public CourierService getCourierService() {
-        return courierService;
-    }
-
-    public void setCourierService(CourierService courierService) {
-        this.courierService = courierService;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+        return LocalDateTime.now();
     }
 
     public List<Courier> getCourierList() {

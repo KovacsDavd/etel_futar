@@ -1,27 +1,20 @@
 package hu.ulyssys.javaee.mbean;
 
 import hu.ulyssys.javaee.entity.Food;
-import hu.ulyssys.javaee.entity.User;
 import hu.ulyssys.javaee.service.CartService;
 import hu.ulyssys.javaee.service.FoodService;
-import hu.ulyssys.javaee.service.UserService;
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalDateTime.*;
 
 @Named
 @ViewScoped

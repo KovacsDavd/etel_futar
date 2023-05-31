@@ -1,8 +1,6 @@
 package hu.ulyssys.javaee.entity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @MappedSuperclass
 public abstract class CoreEntity {

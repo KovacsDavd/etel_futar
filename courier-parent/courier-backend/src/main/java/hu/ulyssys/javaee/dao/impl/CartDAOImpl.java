@@ -2,14 +2,13 @@ package hu.ulyssys.javaee.dao.impl;
 
 import hu.ulyssys.javaee.dao.CartDAO;
 import hu.ulyssys.javaee.entity.Cart;
-import hu.ulyssys.javaee.entity.CartItem;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
 
 @Stateless
 public class CartDAOImpl extends CoreDAOImpl<Cart> implements CartDAO {

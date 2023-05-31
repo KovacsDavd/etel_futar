@@ -7,7 +7,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -59,21 +58,13 @@ public class UserMBean implements Serializable {
         load();
         PrimeFaces.current().executeScript("PF('userDialog').hide()");
     }
+
     private LocalDateTime time() {
-        LocalDateTime now = LocalDateTime.now();
-        return now;
+        return LocalDateTime.now();
     }
 
     private String hashPassword(String passwd) {
         return DigestUtils.md5Hex(passwd);
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public List<User> getList() {

@@ -5,12 +5,10 @@ import hu.ulyssys.javaee.entity.User;
 import hu.ulyssys.javaee.service.FoodService;
 import hu.ulyssys.javaee.service.UserService;
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalDateTime.*;
 
 @Named
 @ViewScoped
@@ -73,8 +70,7 @@ public class FoodMBean implements Serializable {
     }
 
     private LocalDateTime time() {
-        LocalDateTime now = LocalDateTime.now();
-        return now;
+        return LocalDateTime.now();
     }
 
     public List<Food> getList() {
@@ -99,21 +95,5 @@ public class FoodMBean implements Serializable {
 
     public void setSelectedFood(Food selectedFood) {
         this.selectedFood = selectedFood;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
     }
 }

@@ -1,11 +1,9 @@
 package hu.ulyssys.javaee.mbean;
 
-import hu.ulyssys.javaee.entity.User;
 import hu.ulyssys.javaee.entity.UserRole;
 import hu.ulyssys.javaee.mbean.model.LoggedInUserModel;
 import hu.ulyssys.javaee.service.CartService;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

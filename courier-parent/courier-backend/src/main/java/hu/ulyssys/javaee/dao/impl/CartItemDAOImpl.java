@@ -10,9 +10,6 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public class CartItemDAOImpl extends CoreDAOImpl<CartItem> implements CartItemDAO {
-    @PersistenceContext(name = "CourierPersistence")
-    EntityManager entityManager;
-
 
     @Override
     protected Class<CartItem> getManagedClass() {

@@ -1,7 +1,6 @@
 package hu.ulyssys.javaee.rest.model;
 
 import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
 
 public class CourierModel extends CoreModel{
     private String firstName;
