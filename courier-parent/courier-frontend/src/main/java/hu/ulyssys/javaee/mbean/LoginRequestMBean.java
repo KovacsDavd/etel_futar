@@ -1,6 +1,7 @@
 package hu.ulyssys.javaee.mbean;
 
 import hu.ulyssys.javaee.entity.User;
+import hu.ulyssys.javaee.entity.UserRole;
 import hu.ulyssys.javaee.mbean.model.LoggedInUserModel;
 import hu.ulyssys.javaee.mbean.model.LoginModel;
 import hu.ulyssys.javaee.service.CartService;
@@ -14,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.time.LocalDateTime;
 
 @Named
 @RequestScoped
@@ -31,6 +33,26 @@ public class LoginRequestMBean {
     private UserService userService;
     @Inject
     private CartService cartService;
+
+    private LocalDateTime time() {
+        return LocalDateTime.now();
+    }
+
+    public void register() {
+        User user = userService.findByUsername(model.getUsername());
+        if (user != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Már van ilyen felhasználó", ""));
+            return;
+        }
+        user = new User();
+        user.setCreatedDate(time());
+        user.setRole(UserRole.USER);
+        user.setUserName(model.getUsername());
+        user.setPassword(DigestUtils.md5Hex(model.getPassword()));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sikeres regisztráció", ""));
+        PrimeFaces.current().executeScript("PF('regDialog').hide()");
+        userService.add(user);
+    }
 
     public void doLogin() {
         try {
